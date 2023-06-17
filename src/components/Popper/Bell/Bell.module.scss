@@ -1,0 +1,25 @@
+.list-bells {
+    width: 250px;
+}
+.bell-items {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.bell-text {
+    font-family: 600;
+    margin-bottom: 40px;
+}
+.item {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+.bell-img {
+    width: 50px;
+    height: 50px;
+}
+.loggin {
+    margin-bottom: 10px;
+}
