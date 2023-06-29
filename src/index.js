@@ -3,14 +3,24 @@ import ReactDOM from 'react-dom/client';
 import App from '~/App';
 import reportWebVitals from './reportWebVitals';
 import GlobalStyles from './components/GlobalStyles';
-
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const queryClient = new QueryClient();
 root.render(
-    <React.StrictMode>
+    // <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
         <GlobalStyles>
-            <App />
+            <Provider store={store}>
+                <App />
+            </Provider>
         </GlobalStyles>
-    </React.StrictMode>,
+        <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>,
+
+    // </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function

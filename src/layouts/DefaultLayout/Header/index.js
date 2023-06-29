@@ -1,9 +1,6 @@
-import { AiOutlineSearch, AiFillCaretDown, AiOutlineHeart } from 'react-icons/ai';
+import { AiOutlineSearch, AiFillCaretDown } from 'react-icons/ai';
 import { CgMenuGridO } from 'react-icons/cg';
-import { BsBell, BsCart2, BsFileText } from 'react-icons/bs';
-import { CiUser, CiLogout } from 'react-icons/ci';
-import { HiUserCircle, HiOutlineTicket } from 'react-icons/hi';
-import { TbSquareLetterF } from 'react-icons/tb';
+import { BsBell, BsCart2 } from 'react-icons/bs';
 
 import classNames from 'classnames/bind';
 import Tippy from '@tippyjs/react/headless';
@@ -16,42 +13,9 @@ import images from '~/assets/images';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import SearchResult from './SearchResult';
 import Bell from '~/components/Popper/Bell';
-import User from '~/components/Popper/User';
+import UserTip from './UserTip';
 
 const cx = classNames.bind(styles);
-
-const MENU_ITEMS = [
-    {
-        icon: <HiUserCircle />,
-        title: 'Thành viên Fahasa',
-        to: '/profile',
-    },
-    {
-        icon: <BsFileText />,
-        title: 'Đơn hàng của tôi',
-        to: '/order',
-    },
-    {
-        icon: <AiOutlineHeart />,
-        title: 'Sản phẩm yêu thích',
-        to: '/love',
-    },
-    {
-        icon: <HiOutlineTicket />,
-        title: 'Wallet Voucher',
-        to: '/voucher',
-    },
-    {
-        icon: <TbSquareLetterF />,
-        title: 'Tài Khoản F-point',
-        to: '/point',
-    },
-    {
-        icon: <CiLogout />,
-        title: 'Thoát tài khoản',
-        to: '/logout',
-    },
-];
 
 function Header() {
     const [searchResult, setSearchResult] = useState([]);
@@ -109,14 +73,7 @@ function Header() {
                         <span className={cx('text-cart')}>Giỏ Hàng</span>
                     </Link>
 
-                    <User items={MENU_ITEMS}>
-                        <div className={cx('user')}>
-                            <button className={cx('btn-user')}>
-                                <CiUser />
-                            </button>
-                            <span className={cx('text-user')}>Tài Khoản</span>
-                        </div>
-                    </User>
+                    <UserTip />
                 </div>
             </div>
         </header>

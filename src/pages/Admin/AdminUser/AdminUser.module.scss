@@ -1,0 +1,18 @@
+.wrapper {
+    padding: 10px;
+}
+
+.btn-add {
+    height: 100px;
+    width: 100px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+}
+.btn-add:hover {
+    border: 1px solid #c92127;
+}
+.icon-add {
+    font-size: 4rem;
+}

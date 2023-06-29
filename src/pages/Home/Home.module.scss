@@ -6,7 +6,11 @@
 .inner {
     height: 100%;
     width: 1230px;
-    background-color: rgb(190, 197, 197);
 }
 
-//Banner
+//product
+
+.list-product {
+    display: flex;
+    flex-wrap: wrap;
+}

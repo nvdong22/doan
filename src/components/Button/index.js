@@ -19,6 +19,7 @@ function Button({
     register = false,
     disabled = false,
     facebook = false,
+    update = false,
     ...passProps
 }) {
     let Comp = 'button';
@@ -50,6 +51,7 @@ function Button({
         outline,
         facebook,
         disabled,
+        update,
         [className]: className,
     });
 
