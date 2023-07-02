@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import styles from './Fillter.module.scss';
 import classNames from 'classnames/bind';
 import iconUp from './assets/images/angle-up-solid.svg';
@@ -5,6 +6,15 @@ import iconDown from './assets/images/angle-down-solid.svg';
 const cx = classNames.bind(styles);
 
 function FillterLeft() {
+    const [status, setStatus] = useState(false);
+
+    function handleShowMore() {
+        setStatus(true);
+    }
+    function handleHide() {
+        setStatus(false);
+    }
+
     return (
         <div className={cx('container-inner_left')}>
             <ul className={cx('container-inner_left_list')}>
@@ -12,7 +22,7 @@ function FillterLeft() {
                     <h3 className={cx('inner_left_item_title')}>nhóm sản phẩm</h3>
                     <p className={`${cx('inner_left_item_category')} ${cx('inner_left_item-text')}`}>All category</p>
                     <h4 className={cx('inner_left_item-category-VN')}>sách tiếng việt</h4>
-                    <ul className={cx('inner_left_item-category-list')}>
+                    <ul className={`${cx('inner_left_item-category-list')} ${status ? cx('show-more') : ''}`}>
                         <li className={cx('inner_left_item-category-item')}>
                             <a className={cx('inner_left_item-text')} href="">
                                 Thiếu nhi
@@ -61,10 +71,16 @@ function FillterLeft() {
                         </li>
                     </ul>
 
-                    <button className={`${cx('btn-category')} ${cx('btn-category_down')}`}>
+                    <button
+                        className={`${cx('btn-category')} ${status ? '' : cx('show-category')}`}
+                        onClick={handleShowMore}
+                    >
                         <span>xem thêm</span> <img src={iconDown} />
                     </button>
-                    <button className={`${cx('btn-category')} ${cx('btn-category_up')}`}>
+                    <button
+                        className={`${cx('btn-category')} ${status ? cx('show-category') : ''}`}
+                        onClick={handleHide}
+                    >
                         <span>rút gọn</span> <img src={iconUp} />
                     </button>
                 </li>
@@ -73,7 +89,7 @@ function FillterLeft() {
                     <ul className={cx('list_prive')}>
                         <li className={cx('item_prive')}>
                             <input type="radio" value="0 - 150000" id="prive" name="h" />
-                            <label for="prive"> 0đ - 150.000đ</label>
+                            <label for="prive">0đ - 150.000đ</label>
                         </li>
                         <li className={cx('item_prive')}>
                             <input type="radio" value="150000 - 300000 " id="prive1" name="h" />

@@ -53,7 +53,6 @@
     overflow: hidden;
 }
 .btn-category {
-    display: flex;
     align-items: center;
     margin: 20px auto 0;
     color: #f7941e;
@@ -64,9 +63,13 @@
     user-select: none;
     border: none;
     background: #fff;
-}
-.btn-category_up {
     display: none;
+}
+.show-more {
+    height: 280px;
+}
+.show-category {
+    display: flex;
 }
 .btn-category img {
     width: 15px;
