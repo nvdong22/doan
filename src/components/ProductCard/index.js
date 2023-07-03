@@ -31,6 +31,10 @@ function ProductCard(props) {
                     </Stack>
                     <span className={cx('rate-text')}>({rating})</span>
                 </div>
+                <p style={{ display: 'none' }}>
+                    <span className={cx('discount')}>{discount}</span>
+                    <span className={cx('sold')}>{sold}</span>
+                </p>
             </div>
         </div>
     );

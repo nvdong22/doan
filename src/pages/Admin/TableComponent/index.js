@@ -1,72 +1,74 @@
-import { Table } from 'antd';
+import { Dropdown, Space, Table } from 'antd';
+import classNames from 'classnames/bind';
+import style from './table.module.scss';
 
+import { DownOutlined } from '@ant-design/icons';
+import Loading from '~/components/LoadingComponent';
+import { useState } from 'react';
+const cx = classNames.bind(style);
 function TableComponent(props) {
-    const { selectionType = 'checkbox' } = props;
+    const { selectionType = 'checkbox', data = [], isLoading = false, columns = [], handleDeleteMany } = props;
+    const [rowSelectedKeys, setRowSelectedKeys] = useState([]);
 
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
-            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+            setRowSelectedKeys(selectedRowKeys);
         },
-        getCheckboxProps: (record) => ({
-            disabled: record.name === 'Disabled User',
-            // Column configuration not to be checked
-            name: record.name,
-        }),
+        // getCheckboxProps: (record) => ({
+        //     disabled: record.name === 'Disabled User',
+        //     // Column configuration not to be checked
+        //     name: record.name,
+        // }),
     };
 
-    const columns = [
+    const handleDeleteAll = () => {
+        handleDeleteMany(rowSelectedKeys);
+    };
+
+    const items = [
         {
-            title: 'Name',
-            dataIndex: 'name',
-            render: (text) => <a>{text}</a>,
+            label: <span onClick={handleDeleteAll}>Xóa tất cả</span>,
+            key: '0',
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address',
-        },
-    ];
-    const data = [
-        {
+            label: <span>2nd menu item</span>,
             key: '1',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
         },
         {
-            key: '2',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
+            type: 'divider',
         },
         {
+            label: '3rd menu item',
             key: '3',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sydney No. 1 Lake Park',
-        },
-        {
-            key: '4',
-            name: 'Disabled User',
-            age: 99,
-            address: 'Sydney No. 1 Lake Park',
         },
     ];
 
     return (
-        <div>
-            <Table
-                rowSelection={{
-                    type: selectionType,
-                    ...rowSelection,
-                }}
-                columns={columns}
-                dataSource={data}
-            />
-        </div>
+        <Loading isLoading={isLoading}>
+            <div className={cx('wrapper')}>
+                {rowSelectedKeys.length > 0 && (
+                    <Dropdown menu={{ items }} trigger={['click']}>
+                        <span className={cx('option')} onClick={(e) => e.preventDefault()}>
+                            <Space>
+                                Chọn phương thức
+                                <DownOutlined />
+                            </Space>
+                        </span>
+                    </Dropdown>
+                )}
+
+                <Table
+                    className={cx('table')}
+                    rowSelection={{
+                        type: selectionType,
+                        ...rowSelection,
+                    }}
+                    columns={columns}
+                    dataSource={data}
+                    {...props}
+                />
+            </div>
+        </Loading>
     );
 }
 
