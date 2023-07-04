@@ -8,8 +8,11 @@ import Admin from '~/pages/Admin';
 import NotFoundPage from '~/pages/NotFoundPage';
 import Detail from '~/pages/Detail';
 
+import Category from '~/pages/category';
 const publishRoutes = [
     { path: '/', component: Home },
+    { path: '/category', component: Category },
+
     { path: '/cart', component: Cart },
     { path: '/produce', component: Produce },
     { path: '/profile', component: Profile },
