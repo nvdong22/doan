@@ -79,3 +79,9 @@
 .text-dk {
     color: rgb(55, 55, 235);
 }
+.column-name {
+    width: 30px;
+}
+th.ant-table-cell.ant-table-column-sort.ant-table-column-has-sorter {
+    width: 30px;
+}
