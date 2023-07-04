@@ -1,6 +1,6 @@
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-
+import { Link } from 'react-router-dom';
 import { GrNext, GrPrevious } from 'react-icons/gr';
 import styles from './Banner.module.scss';
 import classNames from 'classnames/bind';
@@ -42,7 +42,9 @@ function Banner() {
                 </Carousel>
             </div>
             <div className={cx('small-banner')}>
-                <img src={images.sBanner1} alt="" />
+                <Link to="/detail">
+                    <img src={images.sBanner1} alt="" />
+                </Link>
                 <img src={images.sBanner} alt="" />
             </div>
         </div>

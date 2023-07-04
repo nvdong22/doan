@@ -6,12 +6,14 @@ import Login from '~/pages/Login';
 import Register from '~/pages/Register';
 import Admin from '~/pages/Admin';
 import NotFoundPage from '~/pages/NotFoundPage';
+import Detail from '~/pages/Detail';
 
 const publishRoutes = [
     { path: '/', component: Home },
     { path: '/cart', component: Cart },
     { path: '/produce', component: Produce },
     { path: '/profile', component: Profile },
+    { path: '/detail', component: Detail },
     { path: '/login', component: Login },
     { path: '/register', component: Register },
     { path: '*', component: NotFoundPage, layout: null },

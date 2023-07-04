@@ -95,6 +95,7 @@ function AdminProduct() {
     };
     const handleOnfinish = () => {
         mutation.mutate(stateProduct);
+
         handleCancel();
     };
     const handleOnChange = (e) => {
