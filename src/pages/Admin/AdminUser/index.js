@@ -173,6 +173,7 @@ function AdminUser() {
             },
         );
     };
+<<<<<<< HEAD
     //Delete Many
     const mutationDeleteMany = useMutationHooks((data) => {
         const { token, ...ids } = data;
@@ -201,6 +202,8 @@ function AdminUser() {
             },
         );
     };
+=======
+>>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
     //Search
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
@@ -351,7 +354,10 @@ function AdminUser() {
             <div>Quản lý người dùng</div>
             <div>
                 <TableComponent
+<<<<<<< HEAD
                     handleDeleteMany={handleDeleteManyUser}
+=======
+>>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
                     columns={columns}
                     data={dataTable}
                     isLoading={isLoadingUser}

@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 import Loading from '~/components/LoadingComponent';
 import { DownOutlined } from '@ant-design/icons';
 import { useState } from 'react';
+<<<<<<< HEAD
 // import { Excel } from 'antd-table-saveas-excel';
 // import { useMemo } from 'react';
 const cx = classNames.bind(style);
@@ -14,6 +15,13 @@ function TableComponent(props) {
     //     const arr = columns.filter((col) => col.dataIndex !== 'action');
     //     return arr;
     // }, [columns]);
+=======
+
+const cx = classNames.bind(style);
+function TableComponent(props) {
+    const { selectionType = 'checkbox', data, columns = [], isLoading = false } = props;
+    const [rowSelectedKey, setRowSelectedKey] = useState([]);
+>>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
             console.log(`selectedRowKeys: ${selectedRowKeys}`);
@@ -25,6 +33,7 @@ function TableComponent(props) {
         //     name: record.name,
         // }),
     };
+<<<<<<< HEAD
     const hanleDeleteAll = () => {
         handleDeleteMany(rowSelectedKey);
     };
@@ -40,6 +49,9 @@ function TableComponent(props) {
     //         .saveAs('Excel.xlsx');
     // };
 
+=======
+    const hanleDeleteAll = () => {};
+>>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
     const items = [
         {
             label: <div onClick={hanleDeleteAll}>Xóa tất cả</div>,
@@ -77,7 +89,11 @@ function TableComponent(props) {
                         </Dropdown>
                     </div>
                 )}
+<<<<<<< HEAD
                 {/* <button onClick={exportExcel}>export Excel</button> */}
+=======
+
+>>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
                 <Table
                     className={cx('table')}
                     rowSelection={{

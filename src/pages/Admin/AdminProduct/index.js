@@ -4,11 +4,19 @@ import { IoMdAddCircleOutline } from 'react-icons/io';
 import classNames from 'classnames/bind';
 import style from './AdminProduct.module.scss';
 import TableComponent from '../ComponentAdmin/TableComponent';
+<<<<<<< HEAD
 import { Modal, Upload, Button as BTN, Input, Space, Select } from 'antd';
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 
 import { useRef, useState } from 'react';
 import { getBase64, renderOptions } from '~/ultil';
+=======
+import { Modal, Upload, Button as BTN, Input, Space } from 'antd';
+import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
+
+import { useRef, useState } from 'react';
+import { getBase64 } from '~/ultil';
+>>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
 import { useMutationHooks } from '~/hooks/useMutationHook';
 import * as ProductService from '~/service/ProductService';
 import { useEffect } from 'react';
@@ -102,6 +110,7 @@ function AdminProduct() {
         });
     };
     const handleOnfinish = () => {
+<<<<<<< HEAD
         const params = {
             name: stateProduct.name,
             image: stateProduct.image,
@@ -117,6 +126,9 @@ function AdminProduct() {
             discount: stateProduct.discount,
         };
         mutation.mutate(params, {
+=======
+        mutation.mutate(stateProduct, {
+>>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
             onSettled: () => {
                 queryProduct.refetch();
             },
@@ -141,6 +153,7 @@ function AdminProduct() {
         });
     };
 
+<<<<<<< HEAD
     //adllType
     const fetchAllTypeProduct = async () => {
         const res = await ProductService.getAllTypeProduct();
@@ -153,13 +166,18 @@ function AdminProduct() {
         });
     };
     console.log('value', stateProduct);
+=======
+>>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
     //Get All Product
     const getAllProduct = async () => {
         const res = await ProductService.getAllProducts();
         return res;
     };
     const queryProduct = useQuery(['products'], getAllProduct);
+<<<<<<< HEAD
     const typeProduct = useQuery(['type-products'], fetchAllTypeProduct);
+=======
+>>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
     const { isLoading: isLoadingProduct, data: products } = queryProduct;
     const renderAction = () => {
         return (
@@ -269,7 +287,11 @@ function AdminProduct() {
 
     useEffect(() => {
         if (isSuccessUpdated && dataUpdated?.status === 'OK') {
+<<<<<<< HEAD
             messages.success('update thành công');
+=======
+            messages.success('thêm thành công');
+>>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
             handleCloseDrawer();
         } else if (isErrorUpdated && dataUpdated?.status === 'ERR') {
             messages.error('thêm thất bại');
@@ -306,10 +328,17 @@ function AdminProduct() {
 
     useEffect(() => {
         if (isSuccessDeleted && dataDeleted?.status === 'OK') {
+<<<<<<< HEAD
             messages.success('xóa thành công');
             handleCancelDelete();
         } else if (isErrorDeleted && dataDeleted?.status === 'ERR') {
             messages.error('xóa thất bại');
+=======
+            messages.success('thêm thành công');
+            handleCancelDelete();
+        } else if (isErrorDeleted && dataDeleted?.status === 'ERR') {
+            messages.error('thêm thất bại');
+>>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSuccessDeleted, isErrorDeleted]);
@@ -324,6 +353,7 @@ function AdminProduct() {
             },
         );
     };
+<<<<<<< HEAD
     //Delete Many
     const mutationDeleteMany = useMutationHooks((data) => {
         const { token, ...ids } = data;
@@ -353,6 +383,8 @@ function AdminProduct() {
         );
     };
 
+=======
+>>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
     //Search
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
@@ -523,7 +555,10 @@ function AdminProduct() {
             </But>
             <div>
                 <TableComponent
+<<<<<<< HEAD
                     handleDeleteMany={handleDeleteManyProduct}
+=======
+>>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
                     columns={columns}
                     data={dataTable}
                     isLoading={isLoadingProduct}
