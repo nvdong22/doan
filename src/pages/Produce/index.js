@@ -1,5 +1,13 @@
+import { useParams } from 'react-router-dom';
+import ProductDetail from '~/components/ProductDetail';
+
 function Produce() {
-    return <h2>Produce</h2>;
+    const { id } = useParams();
+    return (
+        <div>
+            <ProductDetail idProduct={id} />
+        </div>
+    );
 }
 
 export default Produce;

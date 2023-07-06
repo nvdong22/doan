@@ -1,23 +1,22 @@
 import classNames from 'classnames/bind';
 import styles from './SearchResult.module.scss';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
-function SearchResult() {
+function SearchResult({ data }) {
     return (
-        <div className={cx('wrapper')}>
-            <img
-                className={cx('produce')}
-                src="https://cdn0.fahasa.com/media/catalog/product/i/m/image_195509_1_41914.jpg"
-                alt=""
-            />
-            <div className={cx('info')}>
-                <p className={cx('name')}>Alice In Borderland - Tập 11 </p>
-                <div className={cx('price')}>
-                    <span className={cx('current-price')}>30.800 đ</span>
-                    <span className={cx('old-price')}>35.000</span>
+        <Link>
+            <div className={cx('wrapper')}>
+                <img className={cx('produce')} src={data.image} alt="" />
+                <div className={cx('info')}>
+                    <p className={cx('name')}>{data.name} </p>
+                    <div className={cx('price')}>
+                        <span className={cx('current-price')}>{data.pricesale.toLocaleString()}</span>
+                        <span className={cx('old-price')}>{data.price.toLocaleString()}</span>
+                    </div>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }
 

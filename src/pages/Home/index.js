@@ -5,20 +5,18 @@ import Banner from './Banner';
 import ProductCard from '~/components/ProductCard';
 import * as ProductService from '~/service/ProductService';
 import { useQuery } from 'react-query';
+import Button from '~/components/Button';
+
 const cx = classNames.bind(styles);
 
 function Home() {
     const fetchProductAll = async () => {
         const res = await ProductService.getAllProducts();
-        console.log('res', res);
-
         return res;
     };
     const { data: products } = useQuery(['products'], fetchProductAll, { retry: 3, retryDelay: 1000 });
-
-    console.log('data', products);
     return (
-        <h2 className={cx('wrapper')}>
+        <div className={cx('wrapper')}>
             <div className={cx('inner')}>
                 <Banner />
                 <div className={cx('list-product')}>
@@ -34,12 +32,16 @@ function Home() {
                                 sold={product.sold}
                                 discount={product.discount}
                                 chapter={product.chapter}
+                                id={product._id}
                             />
                         );
                     })}
                 </div>
+                <Button more className={cx('btn-more')}>
+                    Xem thêm
+                </Button>
             </div>
-        </h2>
+        </div>
     );
 }
 
