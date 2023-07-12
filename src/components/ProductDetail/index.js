@@ -11,10 +11,16 @@ import Button from '../Button';
 import { useQuery } from 'react-query';
 import Loading from '../LoadingComponent';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addOrderProduct } from '~/redux/slides/orderSlide';
+import { convertPrice } from '~/ultil';
 const cx = classNames.bind(styles);
 function ProductDetail({ idProduct }) {
     const [numProduct, setNumProduct] = useState(1);
 
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const onChange = (value) => {
         setNumProduct(Number(value));
     };
@@ -29,7 +35,62 @@ function ProductDetail({ idProduct }) {
                 setNumProduct(numProduct - 1);
             }
         }
-        console.log('type', type);
+    };
+
+    const handleAddProductCartBuy = () => {
+        // {
+        //     name: { type: String, required: true },
+        //     amount: { type: Number, required: true },
+        //     image: { type: String, required: true },
+        //     price: { type: Number, required: true },
+        //     discount: { type: Number },
+        //     product: {
+        //         type: mongoose.Schema.Types.ObjectId,
+        //         ref: 'Product',
+        //         required: true,
+        //     },
+        // },
+        dispatch(
+            addOrderProduct({
+                orderItem: {
+                    name: productDetails?.name,
+                    amount: numProduct,
+                    image: productDetails?.image,
+                    discount: productDetails?.discount,
+                    price: productDetails?.price,
+                    pricesale: productDetails?.pricesale,
+                    product: productDetails?._id,
+                },
+            }),
+        );
+        navigate('/cart');
+    };
+    const handleAddProductCart = () => {
+        // {
+        //     name: { type: String, required: true },
+        //     amount: { type: Number, required: true },
+        //     image: { type: String, required: true },
+        //     price: { type: Number, required: true },
+        //     discount: { type: Number },
+        //     product: {
+        //         type: mongoose.Schema.Types.ObjectId,
+        //         ref: 'Product',
+        //         required: true,
+        //     },
+        // },
+        dispatch(
+            addOrderProduct({
+                orderItem: {
+                    name: productDetails?.name,
+                    amount: numProduct,
+                    image: productDetails?.image,
+                    discount: productDetails?.discount,
+                    price: productDetails?.price,
+                    pricesale: productDetails?.pricesale,
+                    product: productDetails?._id,
+                },
+            }),
+        );
     };
 
     const fetchGetDetailsProduct = async (context) => {
@@ -42,6 +103,8 @@ function ProductDetail({ idProduct }) {
     const { isLoading, data: productDetails } = useQuery(['product-details', idProduct], fetchGetDetailsProduct, {
         enabled: !!idProduct,
     });
+    const priceSale = Math.trunc(productDetails?.price - (productDetails?.price * productDetails?.discount) / 100);
+
     return (
         <Loading isLoading={isLoading}>
             <div className={cx('title')}>
@@ -54,18 +117,11 @@ function ProductDetail({ idProduct }) {
                         <Row>
                             <Image.PreviewGroup
                                 preview={{
-                                    onChange: (current, prev) =>
-                                        console.log(`current index: ${current}, prev index: ${prev}`),
+                                    onChange: (current, prev) => console.log(`current index: ${current}, prev index: ${prev}`),
                                 }}
                             >
                                 <Col span={4} className={cx('img-small')}>
-                                    <Image
-                                        height={80}
-                                        width={70}
-                                        src={productDetails?.image}
-                                        alt=""
-                                        className={cx('img-product')}
-                                    />
+                                    <Image height={80} width={70} src={productDetails?.image} alt="" className={cx('img-product')} />
                                 </Col>
                                 <Col span={10}>
                                     <Image width={400} src={productDetails?.image} alt="" className={cx('')} />
@@ -99,9 +155,9 @@ function ProductDetail({ idProduct }) {
                             <Rate disabled value={productDetails?.rating} allowHalf />
                         </div>
                         <div className={cx('price')}>
-                            <div className={cx('price-sale')}>{productDetails?.pricesale.toLocaleString()}</div>
-                            <div className={cx('price-current')}>{productDetails?.price.toLocaleString()} </div>
-                            <span className={cx('sale')}>-{productDetails?.discount}%</span>
+                            <div className={cx('price-sale')}>{convertPrice(priceSale)}</div>
+                            {productDetails?.discount !== 0 && <div className={cx('price-current')}>{convertPrice(productDetails?.price)}</div>}
+                            {productDetails?.discount !== 0 && <span className={cx('sale')}>-{productDetails?.discount}%</span>}
                         </div>
                         <div className={cx('delivery')}>
                             <div className={cx('time-delivery')}> Thời gian giao hàng</div>
@@ -118,34 +174,18 @@ function ProductDetail({ idProduct }) {
                         <div className={cx('amount')}>
                             <span className={cx('amount-text')}>Số lượng</span>
                             <div className={cx('amount-so')}>
-                                <AiOutlineMinus
-                                    className={cx('btn-less')}
-                                    onClick={() => handleChangeCount('decrease')}
-                                />
-                                <InputNumber
-                                    min={1}
-                                    className={cx('input-amount')}
-                                    onChange={onChange}
-                                    defaultValue={numProduct}
-                                    value={numProduct}
-                                />
-                                <AiOutlinePlus
-                                    className={cx('btn-more')}
-                                    onClick={() => handleChangeCount('increase')}
-                                />
+                                <AiOutlineMinus className={cx('btn-less')} onClick={() => handleChangeCount('decrease')} />
+                                <InputNumber min={1} className={cx('input-amount')} onChange={onChange} defaultValue={numProduct} value={numProduct} />
+                                <AiOutlinePlus className={cx('btn-more')} onClick={() => handleChangeCount('increase')} />
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className={cx('btn-buy')}>
-                    <Button
-                        className={cx('btn-buy-cart')}
-                        register
-                        leftIcon={<AiOutlineShoppingCart className={cx('btn-icon-cart')} />}
-                    >
+                    <Button className={cx('btn-buy-cart')} register leftIcon={<AiOutlineShoppingCart className={cx('btn-icon-cart')} />} onClick={handleAddProductCart}>
                         Thêm vào giỏ hàng
                     </Button>
-                    <Button className={cx('btn-buy-cart')} login>
+                    <Button className={cx('btn-buy-cart')} login onClick={handleAddProductCartBuy}>
                         Mua ngay
                     </Button>
                 </div>

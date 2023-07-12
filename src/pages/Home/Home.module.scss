@@ -13,8 +13,13 @@
 .list-product {
     display: flex;
     flex-wrap: wrap;
+    background-color: #fff;
 }
 .btn-more {
     display: flex;
-    margin: 0 auto;
+    margin: 20px auto;
+}
+.product-top {
+    background-color: #fff;
+    padding-bottom: 10px;
 }

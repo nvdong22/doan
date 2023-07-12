@@ -33,20 +33,18 @@ function MenuTippy({ children }) {
     return (
         <div>
             <Tippy
-                delay={[0, 500]}
+                delay={[0, 300]}
                 placement="bottom"
                 interactive
                 render={(attrs) => (
                     <div className={cx('list-menu')} tabIndex="-1" {...attrs}>
                         <PopperWrapper className={cx('wrapper')}>
+                            <div className={cx('title')}>Danh mục sản phẩm</div>
+
                             <div className={cx('item-menu')}>
                                 {typeProduct.map((item) => {
                                     return (
-                                        <div
-                                            key={item}
-                                            className={cx('item')}
-                                            onClick={() => hanldeNavigateCategory(item)}
-                                        >
+                                        <div key={item} className={cx('item')} onClick={() => hanldeNavigateCategory(item)}>
                                             {item}
                                         </div>
                                     );

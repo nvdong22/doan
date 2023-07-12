@@ -8,26 +8,37 @@ import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import Loading from '~/components/LoadingComponent';
+import NavbarComponent from '~/components/NavbarComponent';
+import useDebounce from '~/hooks/useDebounce';
+
 const cx = classNames.bind(styles);
 
 function SearchPage() {
+    const [loading, setLoading] = useState(false);
     const fetchProductAll = async (search) => {
+        setLoading(true);
         const res = await ProductService.getAllProducts(search);
         if (search.length > 0) {
             setStateProduct(res?.data);
+            setLoading(false);
         } else {
+            setLoading(false);
             return res;
         }
     };
     const { data: products, isLoading } = useQuery(['products'], fetchProductAll, { retry: 3, retryDelay: 1000 });
     const searchProduct = useSelector((state) => state?.product?.search);
     const [stateProduct, setStateProduct] = useState([]);
+    const searchDebounce = useDebounce(searchProduct, 500);
+
     useEffect(() => {
         if (!searchProduct) {
             return;
+        } else if (searchDebounce === '') {
+            return;
         }
         fetchProductAll(searchProduct);
-    }, [searchProduct]);
+    }, [searchProduct, searchDebounce]);
 
     useEffect(() => {
         if (products?.data?.length > 0) {
@@ -36,22 +47,24 @@ function SearchPage() {
     }, [products]);
 
     return (
-        <Loading isLoading={isLoading}>
+        <Loading isLoading={isLoading || loading}>
             <h2 className={cx('wrapper')}>
+                <NavbarComponent className={cx('navbar')} />
                 <div className={cx('inner')}>
                     <div className={cx('list-product')}>
                         {stateProduct?.map((product) => {
                             return (
                                 <ProductCard
+                                    className={cx('search-product')}
                                     key={product._id}
                                     image={product.image}
                                     name={product.name}
                                     price={product.price}
-                                    pricesale={product.pricesale}
                                     rating={product.rating}
                                     sold={product.sold}
                                     discount={product.discount}
                                     chapter={product.chapter}
+                                    countInStock={product.countInStock}
                                     id={product._id}
                                 />
                             );

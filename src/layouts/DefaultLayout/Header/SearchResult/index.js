@@ -11,8 +11,8 @@ function SearchResult({ data }) {
                 <div className={cx('info')}>
                     <p className={cx('name')}>{data.name} </p>
                     <div className={cx('price')}>
-                        <span className={cx('current-price')}>{data.pricesale.toLocaleString()}</span>
-                        <span className={cx('old-price')}>{data.price.toLocaleString()}</span>
+                        <span className={cx('current-price')}>{data.pricesale}</span>
+                        <span className={cx('old-price')}>{data.price}</span>
                     </div>
                 </div>
             </div>

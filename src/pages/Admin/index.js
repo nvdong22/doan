@@ -6,13 +6,11 @@ import AdminUser from './AdminUser';
 import AdminProduct from './AdminProduct';
 import classNames from 'classnames/bind';
 import style from './Admin.module.scss';
+import Header from '~/layouts/DefaultLayout/Header';
 
 const cx = classNames.bind(style);
 function Admin() {
-    const items = [
-        getItem('Khách hàng', 'user', <UserOutlined />),
-        getItem('Sản phẩm', 'product', <AppstoreOutlined />),
-    ];
+    const items = [getItem('Khách hàng', 'user', <UserOutlined />), getItem('Sản phẩm', 'product', <AppstoreOutlined />)];
 
     const [keySelected, setKeySlected] = useState('');
 
@@ -30,20 +28,22 @@ function Admin() {
     const handleOnClick = ({ key }) => {
         setKeySlected(key);
     };
-    console.log(keySelected);
 
     return (
-        <div style={{ display: 'flex', height: '100vh' }}>
-            <Menu
-                mode="inline"
-                // openKeys={openKeys}
-                // onOpenChange={onOpenChange}
-                style={{ width: 256 }}
-                items={items}
-                onClick={handleOnClick}
-            />
-            <div className={cx('page')}>{renderPage(keySelected)}</div>
-        </div>
+        <>
+            <Header />
+            <div style={{ display: 'flex', height: '100vh' }}>
+                <Menu
+                    mode="inline"
+                    // openKeys={openKeys}
+                    // onOpenChange={onOpenChange}
+                    style={{ width: 256 }}
+                    items={items}
+                    onClick={handleOnClick}
+                />
+                <div className={cx('page')}>{renderPage(keySelected)}</div>
+            </div>
+        </>
     );
 }
 

@@ -23,7 +23,7 @@ const cx = classNames.bind(style);
 function AdminUser() {
     //Get All Product
     const getAllUsers = async () => {
-        const res = await UserService.getAllUser();
+        const res = await UserService.getAllUser(user?.access_token);
         return res;
     };
     const queryUser = useQuery(['user'], getAllUsers);
@@ -109,12 +109,7 @@ function AdminUser() {
             isAdmin: false,
         });
     };
-    const {
-        data: dataUpdated,
-        isLoading: isLoadingUpdated,
-        isSuccess: isSuccessUpdated,
-        isErrorUpdated,
-    } = mutationUpdate;
+    const { data: dataUpdated, isLoading: isLoadingUpdated, isSuccess: isSuccessUpdated, isErrorUpdated } = mutationUpdate;
 
     useEffect(() => {
         if (isSuccessUpdated && dataUpdated?.status === 'OK') {
@@ -146,12 +141,7 @@ function AdminUser() {
         const res = UserService.deleteUser(id, token);
         return res;
     });
-    const {
-        data: dataDeleted,
-        isLoading: isLoadingDeleted,
-        isSuccess: isSuccessDeleted,
-        isErrorDeleted,
-    } = mutationDelete;
+    const { data: dataDeleted, isLoading: isLoadingDeleted, isSuccess: isSuccessDeleted, isErrorDeleted } = mutationDelete;
 
     useEffect(() => {
         if (isSuccessDeleted && dataDeleted?.status === 'OK') {
@@ -173,7 +163,6 @@ function AdminUser() {
             },
         );
     };
-<<<<<<< HEAD
     //Delete Many
     const mutationDeleteMany = useMutationHooks((data) => {
         const { token, ...ids } = data;
@@ -202,8 +191,6 @@ function AdminUser() {
             },
         );
     };
-=======
->>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
     //Search
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
@@ -354,10 +341,7 @@ function AdminUser() {
             <div>Quản lý người dùng</div>
             <div>
                 <TableComponent
-<<<<<<< HEAD
                     handleDeleteMany={handleDeleteManyUser}
-=======
->>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
                     columns={columns}
                     data={dataTable}
                     isLoading={isLoadingUser}
@@ -438,16 +422,10 @@ function AdminUser() {
                             </div>
                         </div>
                         <div className={cx('form-input-avatar')}>
-                            <Upload
-                                onChange={handleOnChangeAvatarDetail}
-                                className={cx('ant-upload-list-item.ant-upload-list-item-error')}
-                                maxCount={1}
-                            >
+                            <Upload onChange={handleOnChangeAvatarDetail} className={cx('ant-upload-list-item.ant-upload-list-item-error')} maxCount={1}>
                                 <BTN>Select File</BTN>
                             </Upload>
-                            {stateUserDetail?.avatar && (
-                                <img src={stateUserDetail?.avatar} className={cx('input-avatar')} alt="avatar" />
-                            )}
+                            {stateUserDetail?.avatar && <img src={stateUserDetail?.avatar} className={cx('input-avatar')} alt="avatar" />}
                         </div>
                     </form>
                     <Button login className={cx('btn-save')} onClick={handleOnUpdate}>
@@ -456,12 +434,7 @@ function AdminUser() {
                 </Loading>
             </DrawerComponent>
             <Loading isLoading={isLoadingDeleted}>
-                <ModalComponent
-                    title="Xóa sản phẩm"
-                    open={isModalOpenDelete}
-                    onCancel={handleCancelDelete}
-                    onOk={handleDeleteUser}
-                >
+                <ModalComponent title="Xóa sản phẩm" open={isModalOpenDelete} onCancel={handleCancelDelete} onOk={handleDeleteUser}>
                     <div>Bạn có chắc muốn xóa sản phẩm này không</div>
                 </ModalComponent>
             </Loading>

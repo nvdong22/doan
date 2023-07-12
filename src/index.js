@@ -6,7 +6,8 @@ import GlobalStyles from './components/GlobalStyles';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { Provider } from 'react-redux';
-import { store } from './redux/store';
+import { persistor, store } from './redux/store';
+import { PersistGate } from 'redux-persist/integration/react';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const queryClient = new QueryClient();
 root.render(
@@ -14,7 +15,9 @@ root.render(
     <QueryClientProvider client={queryClient}>
         <GlobalStyles>
             <Provider store={store}>
-                <App />
+                <PersistGate loading={null} persistor={persistor}>
+                    <App />
+                </PersistGate>
             </Provider>
         </GlobalStyles>
         <ReactQueryDevtools initialIsOpen={false} />

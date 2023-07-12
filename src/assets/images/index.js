@@ -9,6 +9,7 @@ export const BBanner = [
 
 const images = {
     logo: require('~/assets/images/fahasa_logo.png'),
+    notBuy: require('~/assets/images/Chay-hang-icon.svg').default,
     bell: require('~/assets/images/ico_login.svg').default,
     sBanner: require('~/assets/images/banner/Potico_T623_392x156 .png'),
     sBanner1: require('~/assets/images/banner/TrangBalo_Resize_392x156.jpg'),

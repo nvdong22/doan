@@ -39,3 +39,12 @@ export const renderOptions = (arr) => {
     });
     return results;
 };
+
+export const convertPrice = (price) => {
+    try {
+        const result = price?.toLocaleString().replace(',', '.');
+        return `${result}đ`;
+    } catch (error) {
+        return null;
+    }
+};

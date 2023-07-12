@@ -12,10 +12,13 @@ import Bell from '~/components/Popper/Bell';
 import UserTip from './UserTip';
 import InputSearch from './InputSearch';
 import MenuTippy from '~/components/Popper/Menu';
+import { Badge } from 'antd';
+import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
 function Header() {
+    const order = useSelector((state) => state.order);
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
@@ -40,14 +43,14 @@ function Header() {
                             <span className={cx('text-bell')}>Thông Báo</span>
                         </div>
                     </Bell>
-
                     <Link to="/cart" className={cx('cart')}>
-                        <button className={cx('btn-cart')}>
-                            <BsCart2 />
-                        </button>
+                        <Badge count={order?.orderItems.length}>
+                            <button className={cx('btn-cart')}>
+                                <BsCart2 />
+                            </button>
+                        </Badge>
                         <span className={cx('text-cart')}>Giỏ Hàng</span>
                     </Link>
-
                     <UserTip />
                 </div>
             </div>

@@ -1,12 +1,11 @@
 import styles from './NavbarComponent.module.scss';
 import classNames from 'classnames/bind';
 import { useState } from 'react';
-import { MdNavigateNext } from 'react-icons/md';
 import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
 import { Checkbox } from 'antd';
 
 const cx = classNames.bind(styles);
-function NavbarComponent() {
+function NavbarComponent({ ...rest }) {
     const [showMore, setShowMore] = useState(false);
 
     const handleShowMore = () => {
@@ -16,14 +15,7 @@ function NavbarComponent() {
         setShowMore(false);
     };
     return (
-        <div>
-            <div className={cx('home')}>
-                <span className={cx('text-home')}>
-                    TRANG CHỦ
-                    <MdNavigateNext />
-                </span>
-                <span className={cx('text-cate')}>ANIME</span>
-            </div>
+        <div {...rest}>
             <div className={cx('wrapper')}>
                 <div className={cx('type-product')}>
                     <h3 className={cx('title')}>Nhóm sản phẩm</h3>
@@ -39,15 +31,19 @@ function NavbarComponent() {
                         className={`${cx('btn-category')} ${showMore ? cx('none-btn') : ''}`}
                         onClick={handleShowMore}
                     >
-                        <span>Xem thêm</span>
-                        <AiOutlineDown />
+                        <span className={cx('btn-text')}>
+                            Xem thêm
+                            <AiOutlineDown />
+                        </span>
                     </button>
                     <button
                         className={`${cx('btn-category')} ${!showMore ? cx('none-btn') : ''}`}
                         onClick={handleShowLess}
                     >
-                        <span>Rút gọn</span>
-                        <AiOutlineUp />
+                        <span className={cx('btn-text')}>
+                            Rút gọn
+                            <AiOutlineUp />
+                        </span>
                     </button>
                 </div>
                 <div className={cx('title-price')}>Giá</div>

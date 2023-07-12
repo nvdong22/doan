@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './Login.module.scss';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { BsFacebook } from 'react-icons/bs';
 import jwt_decode from 'jwt-decode';
@@ -18,7 +18,7 @@ function Login() {
     const handleNavigateRegister = () => {
         navigate('/register');
     };
-
+    const location = useLocation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
@@ -28,12 +28,17 @@ function Login() {
     //
 
     useEffect(() => {
+        console.log('location', location);
+
         if (isSuccess && data?.status !== 'ERR') {
-            navigate('/');
+            if (location?.state) {
+                navigate(location?.state);
+            } else {
+                navigate('/');
+            }
             localStorage.setItem('access_token', JSON.stringify(data?.access_token));
             if (data?.access_token) {
                 const decoded = jwt_decode(data?.access_token);
-                console.log('decoded', decoded);
                 if (decoded?.id) {
                     handleGetDetailUser(decoded?.id, data?.access_token);
                 }

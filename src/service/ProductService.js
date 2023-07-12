@@ -1,14 +1,21 @@
 import axios from 'axios';
 import { axiosJWT } from './UserService';
 
-export const getAllProducts = async (search, limit) => {
+export const getAllProducts = async (search, page, limit) => {
     let res = {};
     if (search?.length > 0) {
         res = await axios.get(`${process.env.REACT_APP_API_URL}/product/getall?filter=name&filter=${search}`);
     } else {
-        res = await axios.get(`${process.env.REACT_APP_API_URL}/product/getall?limit=${limit}`);
+        res = await axios.get(`${process.env.REACT_APP_API_URL}/product/getall?limit=${limit}&page=${page}`);
     }
     return res.data;
+};
+
+export const getProductType = async (type, page, limit) => {
+    if (type) {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/product/getall?filter=type&filter=${type}&limit=${limit}&page=${page}`);
+        return res.data;
+    }
 };
 export const createProduct = async (data) => {
     const res = await axios.post(`${process.env.REACT_APP_API_URL}/product/create`, data);
@@ -35,7 +42,6 @@ export const deleteProduct = async (id, access_token) => {
     });
     return res.data;
 };
-<<<<<<< HEAD
 export const deleteManyProduct = async (data, access_token) => {
     const res = await axiosJWT.post(`${process.env.REACT_APP_API_URL}/product/delete-many`, data, {
         headers: {
@@ -49,5 +55,3 @@ export const getAllTypeProduct = async () => {
     const res = await axios.get(`${process.env.REACT_APP_API_URL}/product/get-all-type`);
     return res.data;
 };
-=======
->>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a

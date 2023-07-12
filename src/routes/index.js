@@ -8,6 +8,10 @@ import Admin from '~/pages/Admin';
 import NotFoundPage from '~/pages/NotFoundPage';
 import SearchPage from '~/pages/SearchPage';
 import Category from '~/pages/Category';
+import CheckoutPage from '~/pages/CheckoutPage';
+import OrderSuccess from '~/pages/OrderSuccess';
+import MyOrder from '~/pages/MyOrder';
+import DetailOrder from '~/pages/DetailOrder';
 
 const publishRoutes = [
     { path: '/', component: Home },
@@ -18,6 +22,10 @@ const publishRoutes = [
     { path: '/register', component: Register },
     { path: '/search', component: SearchPage },
     { path: '/category/:type', component: Category },
+    { path: '/checkout', component: CheckoutPage },
+    { path: '/ordersuccess', component: OrderSuccess },
+    { path: '/my_order', component: MyOrder },
+    { path: '/detail_Order/:id', component: DetailOrder },
 
     { path: '*', component: NotFoundPage, layout: null },
 ];

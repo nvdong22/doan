@@ -4,19 +4,11 @@ import { IoMdAddCircleOutline } from 'react-icons/io';
 import classNames from 'classnames/bind';
 import style from './AdminProduct.module.scss';
 import TableComponent from '../ComponentAdmin/TableComponent';
-<<<<<<< HEAD
 import { Modal, Upload, Button as BTN, Input, Space, Select } from 'antd';
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 
 import { useRef, useState } from 'react';
 import { getBase64, renderOptions } from '~/ultil';
-=======
-import { Modal, Upload, Button as BTN, Input, Space } from 'antd';
-import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
-
-import { useRef, useState } from 'react';
-import { getBase64 } from '~/ultil';
->>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
 import { useMutationHooks } from '~/hooks/useMutationHook';
 import * as ProductService from '~/service/ProductService';
 import { useEffect } from 'react';
@@ -31,7 +23,7 @@ import Highlighter from 'react-highlight-words';
 const cx = classNames.bind(style);
 function AdminProduct() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [stateProduct, setStateProduct] = useState({
+    const initial = () => ({
         name: '',
         image: '',
         type: '',
@@ -45,24 +37,14 @@ function AdminProduct() {
         description: '',
         discount: '',
         newType: '',
+        set: '',
+        page: '',
     });
+    const [stateProduct, setStateProduct] = useState(initial());
 
     //thêm dữ liệu vào Product bằng react query
     const mutation = useMutationHooks((data) => {
-        const {
-            name,
-            image,
-            type,
-            author,
-            sold,
-            price,
-            pricesale,
-            countInStock,
-            rating,
-            chapter,
-            description,
-            discount,
-        } = data;
+        const { name, image, type, author, sold, price, pricesale, countInStock, rating, chapter, description, discount, set, page } = data;
         const res = ProductService.createProduct({
             name,
             image,
@@ -76,6 +58,8 @@ function AdminProduct() {
             chapter,
             description,
             discount,
+            set,
+            page,
         });
         return res;
     });
@@ -107,10 +91,11 @@ function AdminProduct() {
             chapter: '',
             description: '',
             discount: '',
+            set: '',
+            page: '',
         });
     };
     const handleOnfinish = () => {
-<<<<<<< HEAD
         const params = {
             name: stateProduct.name,
             image: stateProduct.image,
@@ -124,11 +109,10 @@ function AdminProduct() {
             chapter: stateProduct.chapter,
             description: stateProduct.description,
             discount: stateProduct.discount,
+            set: stateProduct.set,
+            page: stateProduct.page,
         };
         mutation.mutate(params, {
-=======
-        mutation.mutate(stateProduct, {
->>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
             onSettled: () => {
                 queryProduct.refetch();
             },
@@ -153,7 +137,6 @@ function AdminProduct() {
         });
     };
 
-<<<<<<< HEAD
     //adllType
     const fetchAllTypeProduct = async () => {
         const res = await ProductService.getAllTypeProduct();
@@ -165,19 +148,13 @@ function AdminProduct() {
             type: value,
         });
     };
-    console.log('value', stateProduct);
-=======
->>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
     //Get All Product
     const getAllProduct = async () => {
         const res = await ProductService.getAllProducts();
         return res;
     };
     const queryProduct = useQuery(['products'], getAllProduct);
-<<<<<<< HEAD
     const typeProduct = useQuery(['type-products'], fetchAllTypeProduct);
-=======
->>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
     const { isLoading: isLoadingProduct, data: products } = queryProduct;
     const renderAction = () => {
         return (
@@ -192,20 +169,7 @@ function AdminProduct() {
     const [isOpenDrawer, setIsOpenDrawer] = useState(false);
     const [rowSelected, setRowSelected] = useState('');
     const user = useSelector((state) => state?.user);
-    const [stateProductDetail, setStateProductDetail] = useState({
-        name: '',
-        image: '',
-        type: '',
-        author: '',
-        sold: '',
-        price: '',
-        pricesale: '',
-        countInStock: '',
-        rating: '',
-        chapter: '',
-        description: '',
-        discount: '',
-    });
+    const [stateProductDetail, setStateProductDetail] = useState(initial());
 
     const handleOnChangeDetail = (e) => {
         setStateProductDetail({
@@ -241,6 +205,8 @@ function AdminProduct() {
                 chapter: res?.data?.chapter,
                 description: res?.data?.description,
                 discount: res?.data?.discount,
+                set: res?.data?.set,
+                page: res?.data?.page,
             });
         }
     };
@@ -250,7 +216,6 @@ function AdminProduct() {
             fetchGetProductDetail(rowSelected);
         }
     }, [rowSelected, isOpenDrawer]);
-
     const handleDetailProduct = () => {
         if (rowSelected) {
         }
@@ -276,22 +241,15 @@ function AdminProduct() {
             chapter: '',
             description: '',
             discount: '',
+            set: '',
+            page: '',
         });
     };
-    const {
-        data: dataUpdated,
-        isLoading: isLoadingUpdated,
-        isSuccess: isSuccessUpdated,
-        isErrorUpdated,
-    } = mutationUpdate;
+    const { data: dataUpdated, isLoading: isLoadingUpdated, isSuccess: isSuccessUpdated, isErrorUpdated } = mutationUpdate;
 
     useEffect(() => {
         if (isSuccessUpdated && dataUpdated?.status === 'OK') {
-<<<<<<< HEAD
             messages.success('update thành công');
-=======
-            messages.success('thêm thành công');
->>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
             handleCloseDrawer();
         } else if (isErrorUpdated && dataUpdated?.status === 'ERR') {
             messages.error('thêm thất bại');
@@ -319,26 +277,14 @@ function AdminProduct() {
         const res = ProductService.deleteProduct(id, token);
         return res;
     });
-    const {
-        data: dataDeleted,
-        isLoading: isLoadingDeleted,
-        isSuccess: isSuccessDeleted,
-        isErrorDeleted,
-    } = mutationDelete;
+    const { data: dataDeleted, isLoading: isLoadingDeleted, isSuccess: isSuccessDeleted, isErrorDeleted } = mutationDelete;
 
     useEffect(() => {
         if (isSuccessDeleted && dataDeleted?.status === 'OK') {
-<<<<<<< HEAD
             messages.success('xóa thành công');
             handleCancelDelete();
         } else if (isErrorDeleted && dataDeleted?.status === 'ERR') {
             messages.error('xóa thất bại');
-=======
-            messages.success('thêm thành công');
-            handleCancelDelete();
-        } else if (isErrorDeleted && dataDeleted?.status === 'ERR') {
-            messages.error('thêm thất bại');
->>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSuccessDeleted, isErrorDeleted]);
@@ -353,7 +299,6 @@ function AdminProduct() {
             },
         );
     };
-<<<<<<< HEAD
     //Delete Many
     const mutationDeleteMany = useMutationHooks((data) => {
         const { token, ...ids } = data;
@@ -383,8 +328,6 @@ function AdminProduct() {
         );
     };
 
-=======
->>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
     //Search
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
@@ -555,10 +498,7 @@ function AdminProduct() {
             </But>
             <div>
                 <TableComponent
-<<<<<<< HEAD
                     handleDeleteMany={handleDeleteManyProduct}
-=======
->>>>>>> 9651f902113b1480aaf130625a9911ab6c135e3a
                     columns={columns}
                     data={dataTable}
                     isLoading={isLoadingProduct}
@@ -717,6 +657,7 @@ function AdminProduct() {
                             />
                         </div>
                     </div>
+
                     <div className={cx('form-group')}>
                         <label htmlFor="chapter" className={cx('form-label')}>
                             chapter
@@ -751,6 +692,30 @@ function AdminProduct() {
                         </div>
                     </div>
                     <div className={cx('form-group')}>
+                        <label htmlFor="set" className={cx('form-label')}>
+                            set
+                        </label>
+                        <div className={cx('form-input')}>
+                            <input value={stateProduct.set} onChange={handleOnChange} name="set" type="text" placeholder="Nhập set" className={cx('form-control')} id="set" />
+                        </div>
+                    </div>
+                    <div className={cx('form-group')}>
+                        <label htmlFor="page" className={cx('form-label')}>
+                            page
+                        </label>
+                        <div className={cx('form-input')}>
+                            <input
+                                value={stateProduct.page}
+                                onChange={handleOnChange}
+                                name="page"
+                                type="number"
+                                placeholder="Nhập số trang"
+                                className={cx('form-control')}
+                                id="page"
+                            />
+                        </div>
+                    </div>
+                    <div className={cx('form-group')}>
                         <label htmlFor="description" className={cx('form-label')}>
                             description
                         </label>
@@ -767,28 +732,17 @@ function AdminProduct() {
                         </div>
                     </div>
                     <div className={cx('form-input-avatar')}>
-                        <Upload
-                            onChange={handleOnChangeAvatar}
-                            className={cx('ant-upload-list-item.ant-upload-list-item-error')}
-                            maxCount={1}
-                        >
+                        <Upload onChange={handleOnChangeAvatar} className={cx('ant-upload-list-item.ant-upload-list-item-error')} maxCount={1}>
                             <BTN>Select File</BTN>
                         </Upload>
-                        {stateProduct?.image && (
-                            <img src={stateProduct?.image} className={cx('input-avatar')} alt="avatar" />
-                        )}
+                        {stateProduct?.image && <img src={stateProduct?.image} className={cx('input-avatar')} alt="avatar" />}
                     </div>
                 </form>
                 <Button login className={cx('btn-save')} onClick={handleOnfinish}>
                     Lưu
                 </Button>
             </Modal>
-            <DrawerComponent
-                isOpen={isOpenDrawer}
-                title="Update Sản Phẩm"
-                onClose={() => setIsOpenDrawer(false)}
-                width="80%"
-            >
+            <DrawerComponent isOpen={isOpenDrawer} title="Update Sản Phẩm" onClose={() => setIsOpenDrawer(false)} width="80%">
                 <Loading isLoading={isLoadingUpdated}>
                     <form method="post" action="">
                         <div className={cx('form-group')}>
@@ -953,6 +907,38 @@ function AdminProduct() {
                             </div>
                         </div>
                         <div className={cx('form-group')}>
+                            <label htmlFor="set" className={cx('form-label')}>
+                                set
+                            </label>
+                            <div className={cx('form-input')}>
+                                <input
+                                    value={stateProductDetail.set}
+                                    onChange={handleOnChangeDetail}
+                                    name="set"
+                                    type="text"
+                                    placeholder="Nhập set"
+                                    className={cx('form-control')}
+                                    id="set"
+                                />
+                            </div>
+                        </div>
+                        <div className={cx('form-group')}>
+                            <label htmlFor="page" className={cx('form-label')}>
+                                page
+                            </label>
+                            <div className={cx('form-input')}>
+                                <input
+                                    value={stateProductDetail.page}
+                                    onChange={handleOnChangeDetail}
+                                    name="page"
+                                    type="number"
+                                    placeholder="Nhập số trang"
+                                    className={cx('form-control')}
+                                    id="page"
+                                />
+                            </div>
+                        </div>
+                        <div className={cx('form-group')}>
                             <label htmlFor="description" className={cx('form-label')}>
                                 description
                             </label>
@@ -969,16 +955,10 @@ function AdminProduct() {
                             </div>
                         </div>
                         <div className={cx('form-input-avatar')}>
-                            <Upload
-                                onChange={handleOnChangeAvatarDetail}
-                                className={cx('ant-upload-list-item.ant-upload-list-item-error')}
-                                maxCount={1}
-                            >
+                            <Upload onChange={handleOnChangeAvatarDetail} className={cx('ant-upload-list-item.ant-upload-list-item-error')} maxCount={1}>
                                 <BTN>Select File</BTN>
                             </Upload>
-                            {stateProductDetail?.image && (
-                                <img src={stateProductDetail?.image} className={cx('input-avatar')} alt="avatar" />
-                            )}
+                            {stateProductDetail?.image && <img src={stateProductDetail?.image} className={cx('input-avatar')} alt="avatar" />}
                         </div>
                     </form>
                     <Button login className={cx('btn-save')} onClick={handleOnUpdate}>
@@ -987,12 +967,7 @@ function AdminProduct() {
                 </Loading>
             </DrawerComponent>
             <Loading isLoading={isLoadingDeleted}>
-                <ModalComponent
-                    title="Xóa sản phẩm"
-                    open={isModalOpenDelete}
-                    onCancel={handleCancelDelete}
-                    onOk={handleDeleteProduct}
-                >
+                <ModalComponent title="Xóa sản phẩm" open={isModalOpenDelete} onCancel={handleCancelDelete} onOk={handleDeleteProduct}>
                     <div>Bạn có chắc muốn xóa sản phẩm này không</div>
                 </ModalComponent>
             </Loading>

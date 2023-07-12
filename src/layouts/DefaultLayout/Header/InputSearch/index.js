@@ -26,6 +26,7 @@ function InputSearch() {
     useEffect(() => {
         if (!debounced.trim()) {
             setSearchResult([]);
+            setSearchValue('');
             return;
         }
         fetch(`http://localhost:3003/api/product/getall?filter=name&filter=${debounced}`)
@@ -63,12 +64,7 @@ function InputSearch() {
                 onClickOutside={handleHideResult}
             >
                 <div className={cx('search')}>
-                    <input
-                        value={searchValue}
-                        onChange={onSearch}
-                        onFocus={() => setShowResult(true)}
-                        placeholder="Tìm kiếm sản phẩm mong muốn ..."
-                    />
+                    <input value={searchValue || ''} onChange={onSearch} onFocus={() => setShowResult(true)} placeholder="Tìm kiếm sản phẩm mong muốn ..." />
                     <button className={cx('search-btn')} onClick={handleNavigateSearch}>
                         <AiOutlineSearch />
                     </button>

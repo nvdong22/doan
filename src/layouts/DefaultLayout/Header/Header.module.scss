@@ -3,6 +3,7 @@
     height: 68px;
     display: flex;
     justify-content: center;
+    background-color: #fff;
 }
 .inner {
     height: 100%;
@@ -53,6 +54,7 @@
     flex-direction: column;
     margin-right: 20px;
     text-decoration: none;
+    align-items: center;
 }
 .btn-cart {
     border: none;
