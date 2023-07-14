@@ -1,6 +1,6 @@
 .wrapper {
     margin-top: 15px;
-    margin-bottom: 150px;
+    margin-bottom: 250px;
 }
 .info {
     background-color: #fff;
@@ -38,11 +38,12 @@
 }
 .method-way {
     display: flex;
-    align-items: center;
+    flex-direction: column;
 }
 .buy-icon {
     font-size: 2.4rem;
     margin-right: 10px;
+    color: #a8f3c4;
 }
 .method-text {
     display: flex;
@@ -111,4 +112,9 @@
 .option-back {
     display: flex;
     align-items: center;
+}
+.buy-paypal {
+    color: #268bbd;
+    font-size: 2.4rem;
+    margin-right: 10px;
 }

@@ -119,16 +119,29 @@ function Cart() {
             return 20000;
         } else if (priceMemo >= 500000) {
             return 30000;
+        } else if (priceMemo <= 200000) {
+            return 0;
         }
     }, [priceMemo]);
+
+    const totalSale = useMemo(() => {
+        return Number(priceMemo) - Number(diliveryPriceMemo);
+    }, [priceMemo, diliveryPriceMemo]);
 
     const mutationUpdate = useMutationHooks((data) => {
         const { id, token, ...rest } = data;
         const res = UserService.updateUser(id, { ...rest }, token);
         return res;
     });
-    const { isLoading, data } = mutationUpdate;
-    console.log('data', data);
+    const { isLoading, data, isSuccess, isError } = mutationUpdate;
+    useEffect(() => {
+        if (isSuccess && data?.status !== 'ERR') {
+            messages.success('Sửa thành công');
+        } else if (isError && data?.status === 'ERR') {
+            messages.error('Sửa thất bại');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isSuccess, isError]);
 
     const handleAddCart = () => {
         if (!order?.orderItemSelected?.length) {
@@ -165,6 +178,12 @@ function Cart() {
             );
         }
     };
+    const renderOffProduct = (count, stock) => {
+        if (count > stock) {
+            return <span className={cx('off-product')}>Sản Phẩm Không Đủ Hàng</span>;
+        }
+    };
+
     const handleChangeAddress = () => {
         setIsModalOpenUpdateInfo(true);
     };
@@ -189,7 +208,9 @@ function Cart() {
                 <span className={cx('title')}>Giỏ Hàng </span>
                 <span className={cx('title-count')}>({order?.orderItems?.length} Sản Phẩm )</span>
             </div>
-            <StepComponet items={itemsDelivery} current={diliveryPriceMemo === 20000 ? 1 : diliveryPriceMemo === 30000 ? 2 : 0} />
+            <div className={cx('step')}>
+                <StepComponet items={itemsDelivery} current={diliveryPriceMemo === 20000 ? 1 : diliveryPriceMemo === 30000 ? 2 : 0} />
+            </div>
             <div className={cx('inner')}>
                 <div className={cx('container')}>
                     <div className={cx('check-all')}>
@@ -223,12 +244,22 @@ function Cart() {
                                     </div>
                                     <div className={cx('option')}>
                                         <div className={cx('option-price')}>
-                                            <div className={cx('amount-so')}>
-                                                <FaMinus className={cx('btn-less')} onClick={() => handleChangeCount('decrease', item?.product, item?.amount)} />
-                                                <WrapperInputNumber min={1} value={item?.amount} defaultValue={item?.amount} className={cx('input-amount')} onChange={onChange} />
-                                                <FaPlus className={cx('btn-more')} onClick={() => handleChangeCount('increase', item?.product)} />
+                                            <div>
+                                                <div className={cx('amount-so')}>
+                                                    <FaMinus className={cx('btn-less')} onClick={() => handleChangeCount('decrease', item?.product, item?.amount)} />
+                                                    <WrapperInputNumber
+                                                        min={1}
+                                                        value={item?.amount}
+                                                        defaultValue={item?.amount}
+                                                        className={cx('input-amount')}
+                                                        onChange={onChange}
+                                                    />
+                                                    <FaPlus className={cx('btn-more')} onClick={() => handleChangeCount('increase', item?.product)} />
+                                                </div>
+                                                <div className={cx('render-off')}>{renderOffProduct(item?.amount, item?.countInStock)}</div>
                                             </div>
                                         </div>
+
                                         <div className={cx('total-price')}>{convertPrice(priceSale * item?.amount)}</div>
                                         <div className={cx('delete-cart')}>
                                             <MdDeleteForever onClick={() => handleDeleteOrder(item?.product)} />
@@ -296,7 +327,7 @@ function Cart() {
                             <div className={cx('total-title')}>Thành tiền</div>
                             <div className={cx('total-tt')}>{convertPrice(priceMemo)}</div>
                         </div>
-                        {diliveryPriceMemo && (
+                        {diliveryPriceMemo !== 0 && (
                             <div className={cx('delivery-name')}>
                                 <div className={cx('delivery-title')}>Giá giảm</div>
                                 <div className={cx('delivery-tt')}>{convertPrice(diliveryPriceMemo)}</div>
@@ -305,7 +336,7 @@ function Cart() {
 
                         <div className={cx('total-sum')}>
                             <div className={cx('sum-title')}>Tổng Số Tiền (gồm VAT)</div>
-                            <div className={cx('sum-vat')}>{convertPrice(priceMemo)}</div>
+                            <div className={cx('sum-vat')}>{convertPrice(totalSale)}</div>
                         </div>
                         {!order?.orderItemSelected?.length ? (
                             <Button login disabled className={cx('btn-buy')} onClick={() => handleAddCart()}>

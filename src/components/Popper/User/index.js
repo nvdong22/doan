@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { resetUser } from '~/redux/slides/userSlide';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import Loading from '~/components/LoadingComponent';
 
 const cx = classNames.bind(styles);
 
@@ -31,70 +32,72 @@ function User({ children, items = [] }) {
     };
     return (
         <div>
-            <Tippy
-                delay={[0, 500]}
-                placement="bottom-end"
-                interactive
-                render={(attrs) => (
-                    <div className={cx('list-users')} tabIndex="-1" {...attrs}>
-                        <PopperWrapper>
-                            {user?.access_token && user.isAdmin && (
-                                <>
-                                    <Button to="/system/admin" className={cx('btn')}>
-                                        Quản lý
-                                    </Button>
-                                </>
-                            )}
-                            {user?.access_token ? (
-                                <>
-                                    <Button leftIcon={<HiUserCircle />} className={cx('btn')} onClick={() => navigate('/profile')}>
-                                        Thành viên Fahasa
-                                    </Button>
-                                    <Button
-                                        leftIcon={<BsFileText />}
-                                        onClick={() =>
-                                            navigate('/my_order', {
-                                                state: {
-                                                    id: user?.id,
-                                                    token: user?.access_token,
-                                                },
-                                            })
-                                        }
-                                        className={cx('btn')}
-                                    >
-                                        Đơn hàng của tôi
-                                    </Button>
-                                    <Button leftIcon={<AiOutlineHeart />} className={cx('btn')}>
-                                        Sản phẩm yêu thích
-                                    </Button>
-                                    <Button leftIcon={<HiOutlineTicket />} className={cx('btn')}>
-                                        Wallet Voucher
-                                    </Button>
-                                    <Button leftIcon={<TbSquareLetterF />} className={cx('btn')}>
-                                        Tài Khoản F-point
-                                    </Button>
-                                    <Button leftIcon={<CiLogout />} className={cx('btn')} onClick={() => handleLogout()}>
-                                        Thoát tài khoản
-                                    </Button>
-                                </>
-                            ) : (
-                                <div className={cx('user-items')}>
-                                    <Button login className={cx('loggin')}>
-                                        Đăng nhập
-                                    </Button>
-                                    <Button register>Đăng ký</Button>
-                                    <Button facebook className={cx('icon-fa')}>
-                                        <FaFacebookF />
-                                        Đăng nhập bằng facebook
-                                    </Button>
-                                </div>
-                            )}
-                        </PopperWrapper>
-                    </div>
-                )}
-            >
-                {children}
-            </Tippy>
+            <Loading isLoading={loading}>
+                <Tippy
+                    delay={[0, 500]}
+                    placement="bottom-end"
+                    interactive
+                    render={(attrs) => (
+                        <div className={cx('list-users')} tabIndex="-1" {...attrs}>
+                            <PopperWrapper>
+                                {user?.access_token && user.isAdmin && (
+                                    <>
+                                        <Button to="/system/admin" className={cx('btn')}>
+                                            Quản lý
+                                        </Button>
+                                    </>
+                                )}
+                                {user?.access_token ? (
+                                    <>
+                                        <Button leftIcon={<HiUserCircle />} className={cx('btn')} onClick={() => navigate('/profile')}>
+                                            Thành viên Fahasa
+                                        </Button>
+                                        <Button
+                                            leftIcon={<BsFileText />}
+                                            onClick={() =>
+                                                navigate('/my_order', {
+                                                    state: {
+                                                        id: user?.id,
+                                                        token: user?.access_token,
+                                                    },
+                                                })
+                                            }
+                                            className={cx('btn')}
+                                        >
+                                            Đơn hàng của tôi
+                                        </Button>
+                                        <Button leftIcon={<AiOutlineHeart />} className={cx('btn')}>
+                                            Sản phẩm yêu thích
+                                        </Button>
+                                        <Button leftIcon={<HiOutlineTicket />} className={cx('btn')}>
+                                            Wallet Voucher
+                                        </Button>
+                                        <Button leftIcon={<TbSquareLetterF />} className={cx('btn')}>
+                                            Tài Khoản F-point
+                                        </Button>
+                                        <Button leftIcon={<CiLogout />} className={cx('btn')} onClick={() => handleLogout()}>
+                                            Thoát tài khoản
+                                        </Button>
+                                    </>
+                                ) : (
+                                    <div className={cx('user-items')}>
+                                        <Button login className={cx('loggin')}>
+                                            Đăng nhập
+                                        </Button>
+                                        <Button register>Đăng ký</Button>
+                                        <Button facebook className={cx('icon-fa')}>
+                                            <FaFacebookF />
+                                            Đăng nhập bằng facebook
+                                        </Button>
+                                    </div>
+                                )}
+                            </PopperWrapper>
+                        </div>
+                    )}
+                >
+                    {children}
+                </Tippy>
+            </Loading>
         </div>
     );
 }

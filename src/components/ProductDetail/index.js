@@ -60,6 +60,7 @@ function ProductDetail({ idProduct }) {
                     price: productDetails?.price,
                     pricesale: productDetails?.pricesale,
                     product: productDetails?._id,
+                    countInStock: productDetails?.countInStock,
                 },
             }),
         );
@@ -88,6 +89,7 @@ function ProductDetail({ idProduct }) {
                     price: productDetails?.price,
                     pricesale: productDetails?.pricesale,
                     product: productDetails?._id,
+                    countInStock: productDetails?.countInStock,
                 },
             }),
         );

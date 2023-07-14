@@ -5,9 +5,9 @@ import { Form } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { Radio } from 'antd';
-import { FaMoneyBill } from 'react-icons/fa';
+import { FaMoneyBill, FaCcPaypal } from 'react-icons/fa';
 import { AiFillBackward } from 'react-icons/ai';
-
+import { PayPalButton } from 'react-paypal-button-v2';
 import { useMemo } from 'react';
 import { convertPrice } from '~/ultil';
 import Button from '~/components/Button';
@@ -65,9 +65,22 @@ function CheckoutPage() {
         return totalPrice;
     }, [order]);
 
+    const diliveryPriceMemoSale = useMemo(() => {
+        if (priceMemo >= 200000 && priceMemo <= 500000) {
+            return 20000;
+        } else if (priceMemo >= 500000) {
+            return 30000;
+        } else if (priceMemo <= 200000) {
+            return 0;
+        }
+    }, [priceMemo]);
+    const totalSale = useMemo(() => {
+        return Number(priceMemo) - Number(diliveryPriceMemoSale);
+    }, [priceMemo, diliveryPriceMemoSale]);
     const totalPriceMemo = useMemo(() => {
-        return Number(priceMemo) + Number(diliveryPriceMemo);
-    }, [priceMemo, diliveryPriceMemo]);
+        return Number(priceMemo) + Number(diliveryPriceMemo) - Number(diliveryPriceMemoSale);
+    }, [priceMemo, diliveryPriceMemo, diliveryPriceMemoSale]);
+
     const mutationAddOrder = useMutationHooks((data) => {
         const { token, ...rest } = data;
         const res = OrderService.createOrder({ ...rest }, token);
@@ -83,6 +96,7 @@ function CheckoutPage() {
                 phone: user?.phone,
                 city: user?.city,
                 paymentMethod: payment,
+                deliveryMethod: delivery,
                 itemsPrice: priceMemo,
                 shippingPrice: diliveryPriceMemo,
                 totalPrice: totalPriceMemo,
@@ -160,6 +174,11 @@ function CheckoutPage() {
                                     <FaMoneyBill className={cx('buy-icon')} /> <span>Thanh toán tiền mặt khi nhận hàng</span>
                                 </div>
                             </BuyWayRadio>
+                            <BuyWayRadio value="paypal">
+                                <div className={cx('method-text')}>
+                                    <FaCcPaypal className={cx('buy-paypal')} /> <span>Thanh toán bằng paypal</span>
+                                </div>
+                            </BuyWayRadio>
                         </div>
                     </Radio.Group>
                 </div>
@@ -167,7 +186,7 @@ function CheckoutPage() {
                     <div className={cx('buy-inner')}>
                         <div className={cx('total-name')}>
                             <div className={cx('total-title')}>Thành tiền : </div>
-                            <div className={cx('total-tt')}> {convertPrice(priceMemo)}</div>
+                            <div className={cx('total-tt')}> {convertPrice(totalSale)}</div>
                         </div>
                         <div className={cx('total-sum')}>
                             <div className={cx('sum-title')}>Phí vận chuyển : </div>
@@ -183,9 +202,27 @@ function CheckoutPage() {
                             <AiFillBackward className={cx('back-icon')} />
                             Quay về giỏ hàng
                         </span>
-                        <Button login className={cx('btn-buy')} onClick={() => handleAddOrder()}>
-                            Xác Nhận Thanh Toán
-                        </Button>
+                        {payment === 'paypal' ? (
+                            <PayPalButton
+                                amount="0.01"
+                                // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
+                                onSuccess={(details, data) => {
+                                    alert('Transaction completed by ' + details.payer.name.given_name);
+
+                                    // OPTIONAL: Call your server to save the transaction
+                                    return fetch('/paypal-transaction-complete', {
+                                        method: 'post',
+                                        body: JSON.stringify({
+                                            orderID: data.orderID,
+                                        }),
+                                    });
+                                }}
+                            />
+                        ) : (
+                            <Button login className={cx('btn-buy')} onClick={() => handleAddOrder()}>
+                                Xác Nhận Thanh Toán
+                            </Button>
+                        )}
                     </div>
                 </div>
             </div>

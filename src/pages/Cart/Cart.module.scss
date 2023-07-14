@@ -12,6 +12,11 @@
     font-size: 1.6rem;
     font-weight: 400;
 }
+.step {
+    background-color: #fff;
+    padding: 10px 20px;
+    margin-bottom: 15px;
+}
 .check-all {
     display: flex;
     background-color: #fff;
@@ -71,6 +76,7 @@
 .option-price {
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 .option {
     align-items: center;
@@ -305,4 +311,12 @@
 }
 .delivery-tt {
     font-size: 1.8rem;
+}
+.off-product {
+    color: #c92127;
+}
+.render-off {
+    position: absolute;
+    padding-top: 20px;
+    width: 200px;
 }

@@ -42,7 +42,7 @@ function DetailOrder() {
                 </div>
                 <div className={cx('delivery')}>
                     <span className={cx('delivery-way')}>Hình Thức Giao Hàng : </span>
-                    <span className={cx('delivery-name')}>Giao Hàng Tiêu Chuẩn</span>
+                    <span className={cx('delivery-name')}>{orderContant.delivery[data?.deliveryMethod]}</span>
                     <span className={cx('delivery-price')}>
                         Phí Giao Hàng : <span> {convertPrice(data?.shippingPrice)}</span>
                     </span>

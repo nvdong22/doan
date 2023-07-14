@@ -7,6 +7,10 @@ import style from './MyOrder.module.scss';
 import Button from '~/components/Button';
 import { convertPrice } from '~/ultil';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useMutationHooks } from '~/hooks/useMutationHook';
+import { useEffect } from 'react';
+import * as messages from '~/components/Message';
+import { useSelector } from 'react-redux';
 const cx = classNames.bind(style);
 function MyOrder() {
     // const user = useSelector((state) => state?.user);
@@ -24,12 +28,38 @@ function MyOrder() {
         },
     );
     const { data, isLoading } = queryOrder;
+    const handleDetailsOrder = (id) => {
+        navigate(`/detail_Order/${id}`, {
+            state: {
+                token: state?.token,
+            },
+        });
+    };
+    const user = useSelector((state) => state.user);
+
+    const mutation = useMutationHooks((data) => {
+        const { id, token, orderItems, userId } = data;
+        const res = OrderService.cancelOrder(id, token, orderItems, userId);
+        return res;
+    });
+
+    const handleCancelOrder = (order) => {
+        mutation.mutate(
+            { id: order._id, token: state?.token, orderItems: order?.orderItems, userId: user.id },
+            {
+                onSuccess: () => {
+                    queryOrder.refetch();
+                },
+            },
+        );
+    };
+    const { data: dataCancelOrder, isSuccess: isSuccessCancel, isError: isErrorCancel, isLoading: isLoadingCancel } = mutation;
 
     const renderProduct = (list) => {
         return list?.map((item) => {
             const pricesale = Math.trunc(item?.price - (item?.price * item?.discount) / 100);
             return (
-                <div className={cx('product')} key={item?.product}>
+                <div className={cx('product')} key={item?._id}>
                     <img className={cx('img')} src={item?.image} alt="" />
                     <div className={cx('info')}>
                         <div className={cx('name')}>{item?.name}</div>
@@ -42,15 +72,18 @@ function MyOrder() {
             );
         });
     };
-    const handleDetailsOrder = (id) => {
-        navigate(`/detail_Order/${id}`, {
-            state: {
-                token: state?.token,
-            },
-        });
-    };
+
+    useEffect(() => {
+        if (isSuccessCancel && dataCancelOrder?.status !== 'ERR') {
+            messages.success('Huỷ thành công');
+        } else if (isErrorCancel && dataCancelOrder?.status === 'ERR') {
+            messages.error('Huỷ thất bại');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isSuccessCancel, isErrorCancel]);
+
     return (
-        <Loading isLoading={isLoading}>
+        <Loading isLoading={isLoading || isLoadingCancel}>
             <div className={cx('wrapper')}>
                 {data?.map((order) => {
                     return (
@@ -71,7 +104,7 @@ function MyOrder() {
                                 </div>
                             </div>
                             <div className={cx('order-option')}>
-                                <Button register className={cx('btn-huy')}>
+                                <Button register className={cx('btn-huy')} onClick={() => handleCancelOrder(order)}>
                                     Hủy Đơn Hàng
                                 </Button>
                                 <Button login className={cx('btn-detail')} onClick={() => handleDetailsOrder(order?._id)}>
