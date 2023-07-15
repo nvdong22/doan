@@ -28,6 +28,7 @@ function User({ children, items = [] }) {
         setLoading(true);
         await UserService.logOutUser();
         dispatch(resetUser());
+        localStorage.clear();
         setLoading(false);
     };
     return (

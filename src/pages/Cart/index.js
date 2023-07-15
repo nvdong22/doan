@@ -36,6 +36,7 @@ function Cart() {
         phone: '',
         city: '',
     });
+
     const handleOnChangeDetail = (e) => {
         setStateUserDetail({
             ...stateUserDetail,
@@ -183,7 +184,6 @@ function Cart() {
             return <span className={cx('off-product')}>Sản Phẩm Không Đủ Hàng</span>;
         }
     };
-
     const handleChangeAddress = () => {
         setIsModalOpenUpdateInfo(true);
     };
@@ -338,6 +338,7 @@ function Cart() {
                             <div className={cx('sum-title')}>Tổng Số Tiền (gồm VAT)</div>
                             <div className={cx('sum-vat')}>{convertPrice(totalSale)}</div>
                         </div>
+
                         {!order?.orderItemSelected?.length ? (
                             <Button login disabled className={cx('btn-buy')} onClick={() => handleAddCart()}>
                                 THANH TOÁN

@@ -16,7 +16,6 @@ function TableComponent(props) {
     // }, [columns]);
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
-            console.log(`selectedRowKeys: ${selectedRowKeys}`);
             setRowSelectedKey(selectedRowKeys);
         },
         // getCheckboxProps: (record) => ({

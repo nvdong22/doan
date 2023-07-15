@@ -13,6 +13,7 @@ const initialState = {
     paidAt: '',
     isDelivered: false,
     deliveredAt: '',
+    isSuccessOrder: false,
 };
 
 export const orderSlide = createSlice({

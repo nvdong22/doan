@@ -28,8 +28,6 @@ function Login() {
     //
 
     useEffect(() => {
-        console.log('location', location);
-
         if (isSuccess && data?.status !== 'ERR') {
             if (location?.state) {
                 navigate(location?.state);
@@ -37,6 +35,8 @@ function Login() {
                 navigate('/');
             }
             localStorage.setItem('access_token', JSON.stringify(data?.access_token));
+            localStorage.setItem('refresh_token', JSON.stringify(data?.refresh_token));
+
             if (data?.access_token) {
                 const decoded = jwt_decode(data?.access_token);
                 if (decoded?.id) {
@@ -47,8 +47,10 @@ function Login() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSuccess, isError]);
     const handleGetDetailUser = async (id, token) => {
+        const storage = localStorage.getItem('refresh_token');
+        const refreshToken = JSON.parse(storage);
         const res = await UserService.getDetailUser(id, token);
-        dispatch(updateUser({ ...res?.data, access_token: token }));
+        dispatch(updateUser({ ...res?.data, access_token: token, refreshToken }));
     };
     // useEffect(() => {
     //     if (isSuccess) {

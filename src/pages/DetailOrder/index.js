@@ -27,51 +27,70 @@ function DetailOrder() {
     return (
         <Loading isLoading={isLoading}>
             <div className={cx('wrapper')}>
-                <div className={cx('Title')}>Chi Tiết đơn hàng</div>
-                <div className={cx('info')}>
-                    <div className={cx('info-name')}>{data?.shippingAddress?.fullName}</div>
-                    <div className={cx('info-place')}>
-                        Địa Chỉ :{' '}
-                        <span className={cx('info-place-text')}>
-                            {data?.shippingAddress?.address} - {data?.shippingAddress?.city}
+                <div className={cx('info-user-pay')}>
+                    <div className={cx('Title')}>Chi Tiết Đơn Hàng</div>
+                    <div className={cx('info')}>
+                        <div className={cx('info-name')}>
+                            Tên Khách Hàng :<span className={cx('info-name-text')}>{data?.shippingAddress?.fullName}</span>
+                        </div>
+                        <div className={cx('info-place')}>
+                            Địa Chỉ :{' '}
+                            <span className={cx('info-place-text')}>
+                                {data?.shippingAddress?.address} - {data?.shippingAddress?.city}
+                            </span>
+                        </div>
+                        <div className={cx('info-phone')}>
+                            Điện Thoại : <span className={cx('info-phone-num')}> {data?.shippingAddress?.phone}</span>
+                        </div>
+                    </div>
+                    <div className={cx('delivery')}>
+                        <div>
+                            <span className={cx('delivery-way')}>Hình Thức Giao Hàng : </span>
+                            <span className={cx('delivery-name')}>{orderContant.delivery[data?.deliveryMethod]}</span>
+                        </div>
+                        <span className={cx('delivery-price')}>
+                            Phí Giao Hàng : <span> {convertPrice(data?.shippingPrice)}</span>
                         </span>
                     </div>
-                    <div className={cx('info-phone')}>
-                        Điện Thoại : <span className={cx('info-phone-num')}> {data?.shippingAddress?.phone}</span>
+                    <div className={cx('pay')}>
+                        <span className={cx('pay-title')}>Hình Thức Thanh Toán :</span>
+                        <span className={cx('pay-way')}>{orderContant.payment[data?.paymentMethod]}</span>
+                        <div className={cx('pay-was')}>{`${data?.isPaid ? 'Đã Thanh Toán' : 'Chưa Thanh Toán'}`}</div>
                     </div>
                 </div>
-                <div className={cx('delivery')}>
-                    <span className={cx('delivery-way')}>Hình Thức Giao Hàng : </span>
-                    <span className={cx('delivery-name')}>{orderContant.delivery[data?.deliveryMethod]}</span>
-                    <span className={cx('delivery-price')}>
-                        Phí Giao Hàng : <span> {convertPrice(data?.shippingPrice)}</span>
-                    </span>
-                </div>
-                <div className={cx('pay')}>
-                    <div className={cx('pay-title')}>Hình Thức Thanh Toán :</div>
-                    <div className={cx('pay-way')}>{orderContant.payment[data?.paymentMethod]}</div>
-                    <div className={cx('pay-was')}>{`${data?.isPaid ? 'Đã Thanh Toán' : 'Chưa Thanh Toán'}`}</div>
-                </div>
                 {data?.orderItems?.map((item) => {
-                    const pricesale = item?.price - (item?.price * item?.discount) / 100;
+                    const pricesale = Math.trunc(item?.price - (item?.price * item?.discount) / 100);
                     return (
                         <div key={item?._id}>
                             <div className={cx('product')}>
-                                <img src={item?.image} alt="" />
-                                <span className={cx('product-name')}>{item?.name}</span>
-                                <span className={cx('product-price')}>{convertPrice(pricesale)}</span>
-                                <span className={cx('product-price-old')}>{convertPrice(item?.price)}</span>
+                                <img src={item?.image} alt="" className={cx('product-img')} />
+                                <div className={cx('product-name-list')}>
+                                    <span className={cx('product-name')}>{item?.name}</span>
+                                    <div>
+                                        <span className={cx('product-price')}>{convertPrice(pricesale)}</span>
+                                        <span className={cx('product-price-old')}>{convertPrice(item?.price)}</span>
+                                    </div>
+                                </div>
                             </div>
                             <div className={cx('product-info')}>
-                                <div className={cx('product-info-discount')}>{item?.discount}</div>
-                                <div className={cx('product-info-price')}>{convertPrice(pricesale)}</div>
-                                <div className={cx('product-info-amount')}>{item?.amount}</div>
+                                <div className={cx('product-info-discount')}>
+                                    Giảm giá : <span className={cx('discount-text')}>{item?.discount}%</span>
+                                </div>
+                                <div className={cx('product-info-price')}>
+                                    Giá sản phẩm :<span className={cx('product-info-price-text')}> {convertPrice(pricesale)}</span>
+                                </div>
+                                <div className={cx('product-info-amount')}>
+                                    {' '}
+                                    Số Lượng sản phẩm : <span className={cx('product-info-amount-text')}>{item?.amount}</span>
+                                </div>
                             </div>
                         </div>
                     );
                 })}
-                <div className={cx('product-info-delivery')}>{convertPrice(data?.shippingPrice)}</div>
-                <div className={cx('product-info-total')}>{convertPrice(data?.totalPrice)}</div>
+                <div className={cx('total-info')}>
+                    <div className={cx('product-info-delivery')}>Phí Giao Hàng : {convertPrice(data?.shippingPrice)}</div>
+                    <div className={cx('product-info-total')}>Tổng Tiền : {convertPrice(data?.totalPrice)}</div>
+                </div>
             </div>
         </Loading>
     );

@@ -16,6 +16,7 @@ import * as OrderService from '~/service/OrderSevice';
 import Loading from '~/components/LoadingComponent';
 import * as messages from '~/components/Message';
 import { useNavigate } from 'react-router-dom';
+import * as PaymentService from '~/service/PaymentService';
 import { removeAllOrderProduct } from '~/redux/slides/orderSlide';
 const cx = classNames.bind(style);
 function CheckoutPage() {
@@ -26,11 +27,13 @@ function CheckoutPage() {
     const dispatch = useDispatch();
     const [form] = Form.useForm();
     const user = useSelector((state) => state.user);
+    const [sdkReady, setSdkReady] = useState(false);
     const [stateUserDetail, setStateUserDetail] = useState({
         name: '',
         phone: '',
         address: '',
         city: '',
+        email: '',
     });
     const handleOnChangeDetail = (e) => {
         setStateUserDetail({
@@ -47,6 +50,7 @@ function CheckoutPage() {
         setStateUserDetail({
             city: user?.city,
             name: user?.name,
+            email: user?.email,
             address: user?.address,
             phone: user?.phone,
         });
@@ -101,6 +105,7 @@ function CheckoutPage() {
                 shippingPrice: diliveryPriceMemo,
                 totalPrice: totalPriceMemo,
                 user: user?.id,
+                email: user?.email,
             });
         }
     };
@@ -122,7 +127,7 @@ function CheckoutPage() {
                 },
             });
         } else if (isError && data?.status === 'ERR') {
-            messages.error('Mua hàng thất bại');
+            messages.error('Sản phẩm bạn mua đã hết hàng');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSuccess, isError]);
@@ -134,6 +139,43 @@ function CheckoutPage() {
     const handlePayment = (e) => {
         setPayment(e.target.value);
     };
+    const addPaypalScript = async () => {
+        const { data } = await PaymentService.getConfig();
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = `https://www.paypal.com/sdk/js?client-id=${data}`;
+        script.async = true;
+        script.onload = () => {
+            setSdkReady(true);
+        };
+        document.body.appendChild(script);
+    };
+    useEffect(() => {
+        if (!window.paypal) {
+            addPaypalScript();
+        } else {
+            setSdkReady(true);
+        }
+    }, []);
+    const onSuccessPaypal = (detail, data) => {
+        mutationAddOrder.mutate({
+            token: user?.access_token,
+            orderItems: order?.orderItemSelected,
+            fullName: user?.name,
+            address: user?.address,
+            phone: user?.phone,
+            city: user?.city,
+            email: user?.email,
+            paymentMethod: payment,
+            deliveryMethod: delivery,
+            itemsPrice: priceMemo,
+            shippingPrice: diliveryPriceMemo,
+            totalPrice: totalPriceMemo,
+            user: user?.id,
+            isPaid: true,
+            paidAt: detail.update_time,
+        });
+    };
     return (
         <Loading isLoading={isLoading}>
             <div className={cx('wrapper')}>
@@ -142,6 +184,9 @@ function CheckoutPage() {
                     <WrapperForm name="basic" labelCol={{ span: 3 }} wrapperCol={{ span: 8 }} initialValues={{ remember: true }} autoComplete="off" form={form}>
                         <WrapperForm.Item label="Họ và tên người nhận" name="name" rules={[{ required: true, message: 'Thông tin này không thể để trống!' }]}>
                             <WrapperInput placeholder="Nhập họ và tên người nhận" value={stateUserDetail.name} onChange={handleOnChangeDetail} name="name" />
+                        </WrapperForm.Item>
+                        <WrapperForm.Item label="Email" name="email" rules={[{ required: true, message: 'Thông tin này không thể để trống!' }]}>
+                            <WrapperInput placeholder="email" value={stateUserDetail.email} onChange={handleOnChangeDetail} name="email" />
                         </WrapperForm.Item>
                         <WrapperForm.Item label="Địa chỉ " name="address" rules={[{ required: true, message: 'Thông tin này không thể để trống!' }]}>
                             <WrapperInput placeholder="Nhập địa chỉ người nhận" value={stateUserDetail.address} onChange={handleOnChangeDetail} name="address" />
@@ -202,20 +247,13 @@ function CheckoutPage() {
                             <AiFillBackward className={cx('back-icon')} />
                             Quay về giỏ hàng
                         </span>
-                        {payment === 'paypal' ? (
+                        {payment === 'paypal' && sdkReady ? (
                             <PayPalButton
-                                amount="0.01"
+                                amount={totalPriceMemo}
                                 // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
-                                onSuccess={(details, data) => {
-                                    alert('Transaction completed by ' + details.payer.name.given_name);
-
-                                    // OPTIONAL: Call your server to save the transaction
-                                    return fetch('/paypal-transaction-complete', {
-                                        method: 'post',
-                                        body: JSON.stringify({
-                                            orderID: data.orderID,
-                                        }),
-                                    });
+                                onSuccess={onSuccessPaypal}
+                                onError={() => {
+                                    alert('ERROR');
                                 }}
                             />
                         ) : (
