@@ -272,6 +272,9 @@ function AdminOrder() {
                 product: order?.orderItems?.map((item) => {
                     return `${item?.name}`;
                 }),
+                image: order?.orderItems?.map((item) => {
+                    return `${item?.image}`;
+                }),
                 deliveryMethod: orderContant.delivery[order?.deliveryMethod],
                 paymentMethod: orderContant.payment[order?.paymentMethod],
             };
