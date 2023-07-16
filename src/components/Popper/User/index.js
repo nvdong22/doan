@@ -24,11 +24,13 @@ function User({ children, items = [] }) {
     const [loading, setLoading] = useState(false);
     const user = useSelector((state) => state.user);
     const navigate = useNavigate();
+
     const handleLogout = async () => {
         setLoading(true);
         await UserService.logOutUser();
         dispatch(resetUser());
         localStorage.clear();
+        window.location.reload();
         setLoading(false);
     };
     return (

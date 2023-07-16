@@ -43,9 +43,13 @@ function Cart() {
             [e.target.name]: e.target.value,
         });
     };
-    const handleChangeCount = (type, idProduct, value) => {
+    const handleChangeCount = (type, idProduct, value, countInStock) => {
         if (type === 'increase') {
-            dispatch(increaseAmount({ idProduct }));
+            if (value >= countInStock) {
+                --value;
+            } else {
+                dispatch(increaseAmount({ idProduct }));
+            }
         } else if (type === 'decrease') {
             if (value <= 1) {
                 value = 1;
@@ -228,12 +232,16 @@ function Cart() {
 
                             return (
                                 <div key={item?.product} className={cx('product-cart')}>
-                                    <CustomCheckbox
-                                        className={cx('checkbox-all')}
-                                        onChange={onChangeCheckbox}
-                                        value={item?.product}
-                                        checked={listChecked.includes(item?.product)}
-                                    />
+                                    <div className={cx('checkbox-all-width')}>
+                                        {item?.countInStock !== 0 && (
+                                            <CustomCheckbox
+                                                className={cx('checkbox-all')}
+                                                onChange={onChangeCheckbox}
+                                                value={item?.product}
+                                                checked={listChecked.includes(item?.product)}
+                                            />
+                                        )}
+                                    </div>
                                     <img src={item?.image} alt="" className={cx('product-img')} onClick={() => handleDetailProduct(item?.product)} />
                                     <div className={cx('product-info')}>
                                         <span className={cx('product-name')}>{item?.name}</span>
@@ -245,17 +253,22 @@ function Cart() {
                                     <div className={cx('option')}>
                                         <div className={cx('option-price')}>
                                             <div>
-                                                <div className={cx('amount-so')}>
-                                                    <FaMinus className={cx('btn-less')} onClick={() => handleChangeCount('decrease', item?.product, item?.amount)} />
-                                                    <WrapperInputNumber
-                                                        min={1}
-                                                        value={item?.amount}
-                                                        defaultValue={item?.amount}
-                                                        className={cx('input-amount')}
-                                                        onChange={onChange}
-                                                    />
-                                                    <FaPlus className={cx('btn-more')} onClick={() => handleChangeCount('increase', item?.product)} />
-                                                </div>
+                                                {item?.countInStock !== 0 && (
+                                                    <div className={cx('amount-so')}>
+                                                        <FaMinus className={cx('btn-less')} onClick={() => handleChangeCount('decrease', item?.product, item?.amount)} />
+                                                        <WrapperInputNumber
+                                                            min={1}
+                                                            value={item?.amount}
+                                                            defaultValue={item?.amount}
+                                                            className={cx('input-amount')}
+                                                            onChange={onChange}
+                                                        />
+                                                        <FaPlus
+                                                            className={cx('btn-more')}
+                                                            onClick={() => handleChangeCount('increase', item?.product, item?.amount, item?.countInStock)}
+                                                        />
+                                                    </div>
+                                                )}
                                                 <div className={cx('render-off')}>{renderOffProduct(item?.amount, item?.countInStock)}</div>
                                             </div>
                                         </div>
@@ -348,7 +361,6 @@ function Cart() {
                                 THANH TOÁN
                             </Button>
                         )}
-
                         <div className={cx('total-help')}>(Giảm giá trên web chỉ áp dụng cho bán lẻ)</div>
                     </div>
                 </div>
