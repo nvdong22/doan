@@ -23,3 +23,34 @@
     background-color: #fff;
     padding-bottom: 10px;
 }
+.banner-img {
+    display: flex;
+    margin: 15px 0;
+}
+.banner-img-name {
+    width: calc(100% / 4 - 5px);
+    display: block;
+    margin-right: 6px;
+}
+.type-product {
+    padding: 10px 20px;
+    display: flex;
+    background-color: #fff;
+    margin-bottom: 20px;
+}
+.item-type {
+    padding: 5px;
+    text-align: center;
+    width: 10%;
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    img {
+        width: 40%;
+    }
+}
+.item-type-name {
+    font-size: 1.4rem;
+    margin-top: 5px;
+}

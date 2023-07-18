@@ -4,6 +4,7 @@ import { getItem } from '~/ultil';
 import { UserOutlined, AppstoreOutlined } from '@ant-design/icons';
 import { BsFillCartCheckFill } from 'react-icons/bs';
 import { BiFoodMenu } from 'react-icons/bi';
+import { AiOutlineComment } from 'react-icons/ai';
 
 import AdminUser from './AdminUser';
 import AdminProduct from './AdminProduct';
@@ -12,6 +13,7 @@ import style from './Admin.module.scss';
 import Header from '~/layouts/DefaultLayout/Header';
 import AdminOrder from './AdminOrder';
 import AdminCategory from './AdminCategory';
+import AdminComment from './AdminComment';
 
 const cx = classNames.bind(style);
 function Admin() {
@@ -20,6 +22,7 @@ function Admin() {
         getItem('Sản phẩm', 'product', <AppstoreOutlined />),
         getItem('Đơn hàng', 'order', <BsFillCartCheckFill />),
         getItem('Category', 'category', <BiFoodMenu />),
+        getItem('Comment', 'comment', <AiOutlineComment />),
     ];
 
     const [keySelected, setKeySlected] = useState('');
@@ -34,6 +37,8 @@ function Admin() {
                 return <AdminOrder />;
             case 'category':
                 return <AdminCategory />;
+            case 'comment':
+                return <AdminComment />;
             default:
                 return <></>;
         }

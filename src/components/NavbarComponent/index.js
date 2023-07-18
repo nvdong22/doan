@@ -14,6 +14,9 @@ function NavbarComponent({ ...rest }) {
     const handleShowLess = () => {
         setShowMore(false);
     };
+    const onChange = (value) => {
+        console.log(value);
+    };
     return (
         <div {...rest}>
             <div className={cx('wrapper')}>
@@ -27,19 +30,13 @@ function NavbarComponent({ ...rest }) {
                         <p className={cx('item')}>Manga - Comic</p>
                         <p className={cx('item')}>Sách Học Ngoại Ngữ</p>
                     </div>
-                    <button
-                        className={`${cx('btn-category')} ${showMore ? cx('none-btn') : ''}`}
-                        onClick={handleShowMore}
-                    >
+                    <button className={`${cx('btn-category')} ${showMore ? cx('none-btn') : ''}`} onClick={handleShowMore}>
                         <span className={cx('btn-text')}>
                             Xem thêm
                             <AiOutlineDown />
                         </span>
                     </button>
-                    <button
-                        className={`${cx('btn-category')} ${!showMore ? cx('none-btn') : ''}`}
-                        onClick={handleShowLess}
-                    >
+                    <button className={`${cx('btn-category')} ${!showMore ? cx('none-btn') : ''}`} onClick={handleShowLess}>
                         <span className={cx('btn-text')}>
                             Rút gọn
                             <AiOutlineUp />
@@ -48,18 +45,30 @@ function NavbarComponent({ ...rest }) {
                 </div>
                 <div className={cx('title-price')}>Giá</div>
                 <div className={cx('price-product')}>
-                    <span>
-                        <Checkbox className={cx('box-price')}>0đ - 150.000đ</Checkbox>
-                    </span>
-                    <span>
-                        <Checkbox className={cx('box-price')}>150.000đ - 300.000đ</Checkbox>
-                    </span>
-                    <span>
-                        <Checkbox className={cx('box-price')}>300.000đ - 500.000đ</Checkbox>
-                    </span>
-                    <span>
-                        <Checkbox className={cx('box-price')}>500.000đ - trở lên</Checkbox>
-                    </span>
+                    <Checkbox.Group onChange={onChange}>
+                        <div className={cx('list-price-product')}>
+                            <span>
+                                <Checkbox className={cx('box-price')} value={'0đ - 150.000đ'}>
+                                    0đ - 150.000đ
+                                </Checkbox>
+                            </span>
+                            <span>
+                                <Checkbox className={cx('box-price')} value={'150.000đ - 300.000đ'}>
+                                    150.000đ - 300.000đ
+                                </Checkbox>
+                            </span>
+                            <span>
+                                <Checkbox className={cx('box-price')} value={'300.000đ - 500.000đ'}>
+                                    300.000đ - 500.000đ
+                                </Checkbox>
+                            </span>
+                            <span>
+                                <Checkbox className={cx('box-price')} value={'500.000đ'}>
+                                    500.000đ - trở lên
+                                </Checkbox>
+                            </span>
+                        </div>
+                    </Checkbox.Group>
                 </div>
             </div>
         </div>
