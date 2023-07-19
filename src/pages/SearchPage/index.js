@@ -45,31 +45,38 @@ function SearchPage() {
             setStateProduct(products?.data);
         }
     }, [products]);
+    const [fill, setFill] = useState(true);
+
+    const handleNavbar = () => {
+        setFill(false);
+    };
 
     return (
         <Loading isLoading={isLoading || loading}>
             <h2 className={cx('wrapper')}>
-                <NavbarComponent className={cx('navbar')} />
+                <NavbarComponent className={cx('navbar')} data={products?.data} onChange={handleNavbar} />
                 <div className={cx('inner')}>
-                    <div className={cx('list-product')}>
-                        {stateProduct?.map((product) => {
-                            return (
-                                <ProductCard
-                                    className={cx('search-product')}
-                                    key={product._id}
-                                    image={product.image}
-                                    name={product.name}
-                                    price={product.price}
-                                    rating={product.rating}
-                                    sold={product.sold}
-                                    discount={product.discount}
-                                    chapter={product.chapter}
-                                    countInStock={product.countInStock}
-                                    id={product._id}
-                                />
-                            );
-                        })}
-                    </div>
+                    {fill && (
+                        <div className={cx('list-product')}>
+                            {stateProduct?.map((product) => {
+                                return (
+                                    <ProductCard
+                                        className={cx('search-product')}
+                                        key={product._id}
+                                        image={product.image}
+                                        name={product.name}
+                                        price={product.price}
+                                        rating={product.rating}
+                                        sold={product.sold}
+                                        discount={product.discount}
+                                        chapter={product.chapter}
+                                        countInStock={product.countInStock}
+                                        id={product._id}
+                                    />
+                                );
+                            })}
+                        </div>
+                    )}
                 </div>
             </h2>
         </Loading>

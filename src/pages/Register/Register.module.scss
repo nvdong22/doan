@@ -19,6 +19,7 @@
 .title-register {
 }
 .form-group {
+    position: relative;
 }
 .form-input {
     height: 40px;
@@ -51,4 +52,11 @@
 }
 .text-dk {
     color: rgb(55, 55, 235);
+}
+.eyes {
+    position: absolute;
+    right: 8px;
+    top: 27px;
+    z-index: 1;
+    font-size: 1.8rem;
 }

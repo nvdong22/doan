@@ -9,6 +9,7 @@ import * as UserService from '~/service/UserService';
 import { useMutationHooks } from '~/hooks/useMutationHook';
 import Loading from '~/components/LoadingComponent';
 import * as messages from '~/components/Message';
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 
 const cx = classNames.bind(styles);
 function Register() {
@@ -46,6 +47,8 @@ function Register() {
     const handleSignUp = () => {
         mutation.mutate({ email, password, confirmPassword });
     };
+    const [isShowPassword, setIsShowPassword] = useState(false);
+
     //
     return (
         <div className={cx('wrapper')}>
@@ -80,12 +83,15 @@ function Register() {
                             <InputForm
                                 value={password}
                                 onChange={handleOnchangePassWord}
-                                type="password"
+                                type={isShowPassword ? 'text' : 'password'}
                                 placeholder="Nhập mật khẩu"
                                 className={cx('form-control')}
                                 id="password"
                             />
                         </div>
+                        <span className={cx('eyes')} onClick={() => setIsShowPassword(!isShowPassword)}>
+                            {isShowPassword ? <EyeTwoTone /> : <EyeInvisibleOutlined />}
+                        </span>
                     </div>
                     <div className={cx('form-group')}>
                         <label htmlFor="re-password" className={cx('form-label')}>
@@ -95,22 +101,20 @@ function Register() {
                             <InputForm
                                 value={confirmPassword}
                                 onChange={handleOnchangeComfirmPassword}
-                                type="password"
+                                type={isShowPassword ? 'text' : 'password'}
                                 placeholder="Xác nhận mật khẩu"
                                 className={cx('form-control')}
                                 id="re-password"
                             />
                         </div>
+                        <span className={cx('eyes')} onClick={() => setIsShowPassword(!isShowPassword)}>
+                            {isShowPassword ? <EyeTwoTone /> : <EyeInvisibleOutlined />}
+                        </span>
                     </div>
                 </form>
                 {data?.status === 'ERR' && <span style={{ color: 'red' }}>{data?.message}</span>}
                 <Loading isLoading={isLoading}>
-                    <Button
-                        register
-                        className={cx('btn-register')}
-                        onClick={handleSignUp}
-                        disabled={email.length === 0}
-                    >
+                    <Button register className={cx('btn-register')} onClick={handleSignUp} disabled={email.length === 0}>
                         Đăng ký
                     </Button>
                 </Loading>

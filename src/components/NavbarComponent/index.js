@@ -2,10 +2,15 @@ import styles from './NavbarComponent.module.scss';
 import classNames from 'classnames/bind';
 import { useState } from 'react';
 import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
-import { Checkbox } from 'antd';
+import { Radio } from 'antd';
+// import ProductCard from '../ProductCard';
 
 const cx = classNames.bind(styles);
-function NavbarComponent({ ...rest }) {
+function NavbarComponent(props) {
+    const {
+        //  data,
+        className,
+    } = props;
     const [showMore, setShowMore] = useState(false);
 
     const handleShowMore = () => {
@@ -14,11 +19,31 @@ function NavbarComponent({ ...rest }) {
     const handleShowLess = () => {
         setShowMore(false);
     };
-    const onChange = (value) => {
-        console.log(value);
-    };
+    // const [fillProduct, setFillProduct] = useState([]);
+
+    // const onChange = (e) => {
+    //     const value = e.target.value;
+    //     let arr;
+    //     if (value === '0-150.000đ') {
+    //         arr = data?.filter((item) => {
+    //             return Math.trunc(item.price - (item.price * item.discount) / 100) <= 150000;
+    //         });
+    //         setFillProduct(arr);
+    //     } else if (value === '150.000đ-300.000đ') {
+    //         arr = data?.filter((item) => {
+    //             return Math.trunc(item.price - (item.price * item.discount) / 100) > 150000 && Math.trunc(item.price - (item.price * item.discount) / 100) < 300000;
+    //         });
+    //         setFillProduct(arr);
+    //     } else if (value === '300.000đ-500.000đ') {
+    //         arr = data?.filter((item) => {
+    //             return Math.trunc(item.price - (item.price * item.discount) / 100) > 300000 && Math.trunc(item.price - (item.price * item.discount) / 100) < 500000;
+    //         });
+    //         setFillProduct(arr);
+    //     }
+    // };
+    // console.log(fillProduct);
     return (
-        <div {...rest}>
+        <div className={className}>
             <div className={cx('wrapper')}>
                 <div className={cx('type-product')}>
                     <h3 className={cx('title')}>Nhóm sản phẩm</h3>
@@ -45,32 +70,53 @@ function NavbarComponent({ ...rest }) {
                 </div>
                 <div className={cx('title-price')}>Giá</div>
                 <div className={cx('price-product')}>
-                    <Checkbox.Group onChange={onChange}>
+                    <Radio.Group
+                    //  onChange={onChange}
+                    >
                         <div className={cx('list-price-product')}>
                             <span>
-                                <Checkbox className={cx('box-price')} value={'0đ - 150.000đ'}>
+                                <Radio className={cx('box-price')} value={'0-150.000đ'}>
                                     0đ - 150.000đ
-                                </Checkbox>
+                                </Radio>
                             </span>
                             <span>
-                                <Checkbox className={cx('box-price')} value={'150.000đ - 300.000đ'}>
+                                <Radio className={cx('box-price')} value={'150.000đ-300.000đ'}>
                                     150.000đ - 300.000đ
-                                </Checkbox>
+                                </Radio>
                             </span>
                             <span>
-                                <Checkbox className={cx('box-price')} value={'300.000đ - 500.000đ'}>
+                                <Radio className={cx('box-price')} value={'300.000đ-500.000đ'}>
                                     300.000đ - 500.000đ
-                                </Checkbox>
+                                </Radio>
                             </span>
                             <span>
-                                <Checkbox className={cx('box-price')} value={'500.000đ'}>
+                                <Radio className={cx('box-price')} value={'500.000đ'}>
                                     500.000đ - trở lên
-                                </Checkbox>
+                                </Radio>
                             </span>
                         </div>
-                    </Checkbox.Group>
+                    </Radio.Group>
                 </div>
             </div>
+            {/* <div className={cx('list-product')}>
+                {fillProduct?.map((product) => {
+                    return (
+                        <ProductCard
+                            className={cx('search-product')}
+                            key={product._id}
+                            image={product.image}
+                            name={product.name}
+                            price={product.price}
+                            rating={product.rating}
+                            sold={product.sold}
+                            discount={product.discount}
+                            chapter={product.chapter}
+                            countInStock={product.countInStock}
+                            id={product._id}
+                        />
+                    );
+                })}
+            </div> */}
         </div>
     );
 }

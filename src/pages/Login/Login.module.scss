@@ -30,6 +30,7 @@
 }
 .form-group {
     margin: 20px 0;
+    position: relative;
 }
 .form-label {
 }
@@ -47,4 +48,11 @@
 }
 .btn-fb {
     margin: 10px auto;
+}
+.eyes {
+    position: absolute;
+    right: 8px;
+    top: 27px;
+    z-index: 1;
+    font-size: 1.8rem;
 }

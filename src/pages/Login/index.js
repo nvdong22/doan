@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { BsFacebook } from 'react-icons/bs';
 import jwt_decode from 'jwt-decode';
-
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import Button from '~/components/Button';
 import InputForm from '~/components/InputForm';
 import * as UserService from '~/service/UserService';
@@ -26,7 +26,7 @@ function Login() {
     const mutation = useMutationHooks((data) => UserService.loginUser(data));
     const { data, isLoading, isSuccess, isError } = mutation;
     //
-
+    const [isShowPassword, setIsShowPassword] = useState(false);
     useEffect(() => {
         if (isSuccess && data?.status !== 'ERR') {
             if (location?.state) {
@@ -118,12 +118,15 @@ function Login() {
                             <InputForm
                                 value={password}
                                 onChange={handleOnchangePassWord}
-                                type="password"
+                                type={isShowPassword ? 'text' : 'password'}
                                 placeholder="Nhập số điện thoại"
                                 className={cx('form-control')}
                                 id="name"
                             />
                         </div>
+                        <span className={cx('eyes')} onClick={() => setIsShowPassword(!isShowPassword)}>
+                            {isShowPassword ? <EyeTwoTone /> : <EyeInvisibleOutlined />}
+                        </span>
                     </div>
                 </form>
                 <span>Quên mật khẩu</span>

@@ -3,7 +3,7 @@ import styles from './ProductDetail.module.scss';
 import { Col, Row, Image, Rate } from 'antd';
 import { AiOutlineMinus, AiOutlinePlus, AiOutlineShoppingCart } from 'react-icons/ai';
 import { GrFormNext } from 'react-icons/gr';
-
+import { BsPencil } from 'react-icons/bs';
 import * as ProductService from '~/service/ProductService';
 
 import { InputNumber } from 'antd';
@@ -20,6 +20,8 @@ import { useMutationHooks } from '~/hooks/useMutationHook';
 import * as CommentService from '~/service/CommentService';
 import ModalComponent from '~/pages/Admin/ComponentAdmin/ModalComponent';
 import { useEffect } from 'react';
+import { useMemo } from 'react';
+import { WrapperRate, WrapperRate1 } from './style';
 
 const cx = classNames.bind(styles);
 function ProductDetail({ idProduct }) {
@@ -161,7 +163,7 @@ function ProductDetail({ idProduct }) {
     const handleCancel = () => {
         setIsModalOpen(false);
         setStateComment('');
-        setRateValue(0);
+        setRateValue(5);
     };
     const fetchMyOrder = async (context) => {
         const id = context?.queryKey && context?.queryKey[1];
@@ -174,10 +176,18 @@ function ProductDetail({ idProduct }) {
         enabled: !!idProduct,
     });
     const { data: dataComment } = queryComment;
-    const [rateValue, setRateValue] = useState(0);
+    const [rateValue, setRateValue] = useState(5);
     const handleRate = (value) => {
         setRateValue(value);
     };
+    const rateMemo = useMemo(() => {
+        const totalRate = dataComment?.reduce((total, curr) => {
+            return total + curr?.rating / dataComment?.length;
+        }, 0);
+        return totalRate;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dataComment]);
+    const [loadMore, setLoadMore] = useState(false);
     return (
         <Loading isLoading={isLoading}>
             <div className={cx('title')}>
@@ -285,10 +295,6 @@ function ProductDetail({ idProduct }) {
                             <p>{productDetails?.author}</p>
                         </div>
                         <div className={cx('information')}>
-                            <p className={cx('information_left')}>Người dịch</p>
-                            <p>Đông Ngáo Ngơ</p>
-                        </div>
-                        <div className={cx('information')}>
                             <p className={cx('information_left')}>Thể loại</p>
                             <p>{productDetails?.type}</p>
                         </div>
@@ -317,7 +323,18 @@ function ProductDetail({ idProduct }) {
                         </div>
                         <div className={cx('description')}>
                             <h3>Mô tả nội dung:</h3>
-                            <p className={cx('description-text')}>{productDetails?.description}</p>
+                            <p className={cx(`${cx('description-text')} ${loadMore ? cx('description-less') : ''}`)}>{productDetails?.description}</p>
+                        </div>
+                        <div className={cx('more-des-op')}>
+                            {!loadMore ? (
+                                <Button register className={cx('more-des')} onClick={() => setLoadMore(true)}>
+                                    Xem thêm
+                                </Button>
+                            ) : (
+                                <Button register className={cx('more-des')} onClick={() => setLoadMore(false)}>
+                                    Rút ngọn
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -325,9 +342,21 @@ function ProductDetail({ idProduct }) {
                 <div className={cx('product-review')}>
                     <div className={cx('add-comment')}>
                         <h2 className={cx('product-review-title')}>Đánh giá sản phẩm</h2>
-                        <Button register onClick={() => handleOpenModal()}>
-                            Viết đánh giá
-                        </Button>
+                        <div className={cx('rate-comment')}>
+                            <div>
+                                <span className={cx('rate-text')}>{rateMemo?.toFixed(1)}</span>
+                                <span className={cx('rate-text-5')}>/5</span>
+                                <div>
+                                    <WrapperRate disabled value={rateMemo?.toFixed(1)} allowHalf />
+                                </div>
+                                <div className={cx('rate-text-total')}>( {dataComment?.length} đáng giá)</div>
+                            </div>
+                            <div>
+                                <Button register onClick={() => handleOpenModal()} className={cx('btn-write')}>
+                                    <BsPencil /> Viết đánh giá
+                                </Button>
+                            </div>
+                        </div>
                     </div>
                     <div className={cx('comment')}>
                         {dataComment?.map((item) => {
@@ -338,8 +367,10 @@ function ProductDetail({ idProduct }) {
                                             <div className={cx('comment-name')}>{item?.userName}</div>
                                             <div className={cx('comment-date')}>{item?.createdAt?.split('T')[0]}</div>
                                         </div>
-                                        <Rate disabled value={item?.rating} />
-                                        <span className={cx('comment-text')}>{item?.comment}</span>
+                                        <div className={cx('comment-rate')}>
+                                            <WrapperRate disabled value={item?.rating} />
+                                            <span className={cx('comment-text')}>{item?.comment}</span>
+                                        </div>
                                     </div>
                                 </div>
                             );
@@ -348,8 +379,10 @@ function ProductDetail({ idProduct }) {
                 </div>
             </div>
             <ModalComponent title="" open={isModalOpen} onCancel={handleCancel} footer={null} width="64%">
-                <div>Viết đáng giá sản phẩm</div>
-                <Rate value={rateValue} onChange={handleRate} />
+                <div className={cx('title-comment')}>VIẾT ĐÁNH GIÁ SẢN PHẨM</div>
+                <div className={cx('rate-star')}>
+                    <WrapperRate1 value={rateValue} onChange={handleRate} defaultValue={rateValue} />
+                </div>
                 <textarea
                     className={cx('textarea-product')}
                     cols={95}
@@ -358,9 +391,14 @@ function ProductDetail({ idProduct }) {
                     value={comment}
                     onChange={handleOnChangeComment}
                 ></textarea>
-                <Button login onClick={handleAddComment}>
-                    Gửi nhận xét
-                </Button>
+                <div className={cx('btn-comment')}>
+                    <span onClick={() => setIsModalOpen(false)} className={cx('close-model')}>
+                        Hủy
+                    </span>
+                    <Button login onClick={handleAddComment}>
+                        Gửi nhận xét
+                    </Button>
+                </div>
             </ModalComponent>
         </Loading>
     );

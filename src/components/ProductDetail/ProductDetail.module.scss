@@ -197,9 +197,9 @@ img.ant-image-img.img-product {
 }
 .node {
     padding-top: 10px;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     padding-bottom: 10px;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid #ccc;
 }
 .red {
     color: #c92127;
@@ -208,7 +208,7 @@ img.ant-image-img.img-product {
     margin-top: 10px;
 }
 .textarea-product {
-    border: 1px solid #333;
+    border: 1px solid #ccc;
     border-radius: 8px;
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
@@ -216,6 +216,8 @@ img.ant-image-img.img-product {
     -o-border-radius: 8px;
     padding: 10px;
     margin: 10px 0;
+    outline: none;
+    resize: none;
 }
 .product-information {
     margin-top: 15px;
@@ -232,7 +234,8 @@ img.ant-image-img.img-product {
 .comment {
 }
 .comment-name-date {
-    width: 100px;
+    width: 200px;
+    margin-top: 11px;
 }
 .comment-name {
     font-weight: 600;
@@ -241,7 +244,6 @@ img.ant-image-img.img-product {
     color: #7a7e7f;
 }
 .comment-text {
-    margin-left: 80px;
 }
 .list-comment {
     display: flex;
@@ -249,4 +251,66 @@ img.ant-image-img.img-product {
 }
 .add-comment {
     margin-bottom: 20px;
+}
+.title-comment {
+    font-size: 1.6rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 15px;
+}
+.rate-star {
+    text-align: center;
+}
+.btn-comment {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.close-model {
+    cursor: pointer;
+    font-size: 1.6rem;
+    color: #ccc;
+    font-weight: 600;
+    margin-right: 10px;
+}
+.rate-comment {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 15px;
+}
+.rate-text {
+    font-size: 5rem;
+    font-weight: 600;
+}
+.rate-text-5 {
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+.comment-rate {
+    display: flex;
+    flex-direction: column;
+}
+.btn-write {
+    margin-left: 200px;
+    min-width: 344px;
+}
+.more-des {
+    min-width: 200px;
+    margin-left: 0;
+}
+.more-des-op {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.description-text {
+    height: 66px;
+    overflow: hidden;
+}
+.description-less {
+    height: 100%;
+}
+.rate-text-total {
+    color: #7a7e7f;
 }
