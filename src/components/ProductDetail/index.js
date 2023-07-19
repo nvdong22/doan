@@ -5,7 +5,7 @@ import { AiOutlineMinus, AiOutlinePlus, AiOutlineShoppingCart } from 'react-icon
 import { GrFormNext } from 'react-icons/gr';
 import { BsPencil } from 'react-icons/bs';
 import * as ProductService from '~/service/ProductService';
-
+import chunk from 'lodash/chunk';
 import { InputNumber } from 'antd';
 import Button from '../Button';
 import { useQuery } from 'react-query';
@@ -128,6 +128,7 @@ function ProductDetail({ idProduct }) {
         const res = CommentService.createComment({ ...rest }, token);
         return res;
     });
+
     const handleAddComment = () => {
         if (user?.access_token && user?.id && user?.name && comment && productDetails?._id) {
             mutationAddComment.mutate(
@@ -165,6 +166,7 @@ function ProductDetail({ idProduct }) {
         setStateComment('');
         setRateValue(5);
     };
+
     const fetchMyOrder = async (context) => {
         const id = context?.queryKey && context?.queryKey[1];
         if (id) {
@@ -172,6 +174,7 @@ function ProductDetail({ idProduct }) {
             return res.data;
         }
     };
+
     const queryComment = useQuery(['comment', idProduct], fetchMyOrder, {
         enabled: !!idProduct,
     });
@@ -180,6 +183,10 @@ function ProductDetail({ idProduct }) {
     const handleRate = (value) => {
         setRateValue(value);
     };
+
+    const pagination = chunk(dataComment, 7);
+    const [currentIndex, setCurrentIndex] = useState(0);
+
     const rateMemo = useMemo(() => {
         const totalRate = dataComment?.reduce((total, curr) => {
             return total + curr?.rating / dataComment?.length;
@@ -187,7 +194,9 @@ function ProductDetail({ idProduct }) {
         return totalRate;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataComment]);
+
     const [loadMore, setLoadMore] = useState(false);
+
     return (
         <Loading isLoading={isLoading}>
             <div className={cx('title')}>
@@ -359,7 +368,7 @@ function ProductDetail({ idProduct }) {
                         </div>
                     </div>
                     <div className={cx('comment')}>
-                        {dataComment?.map((item) => {
+                        {pagination[currentIndex]?.map((item) => {
                             return (
                                 <div key={item?._id}>
                                     <div className={cx('list-comment')}>
@@ -375,6 +384,17 @@ function ProductDetail({ idProduct }) {
                                 </div>
                             );
                         })}
+                    </div>
+                    <div>
+                        <ul className={cx('list-pagination')}>
+                            {pagination?.map((item, index) => {
+                                return (
+                                    <li key={index} onClick={() => setCurrentIndex(index)} className={`${cx('pagination')} ${index === currentIndex ? cx('active') : ''}`}>
+                                        {index + 1}
+                                    </li>
+                                );
+                            })}
+                        </ul>
                     </div>
                 </div>
             </div>

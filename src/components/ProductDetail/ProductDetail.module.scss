@@ -314,3 +314,19 @@ img.ant-image-img.img-product {
 .rate-text-total {
     color: #7a7e7f;
 }
+.list-pagination {
+    display: flex;
+    list-style: none;
+    align-items: center;
+    justify-content: center;
+}
+.pagination {
+    text-align: center;
+    font-size: 1.8rem;
+    padding: 5px 15px;
+}
+.active {
+    background-color: #c92127;
+    color: #fff;
+    border-radius: 5px;
+}

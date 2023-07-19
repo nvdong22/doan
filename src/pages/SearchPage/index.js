@@ -64,6 +64,11 @@ function SearchPage() {
                 return Math.trunc(item.price - (item.price * item.discount) / 100) > 300000 && Math.trunc(item.price - (item.price * item.discount) / 100) < 500000;
             });
             setStateProduct(arr);
+        } else if (value === '500.000đ') {
+            arr = products?.data.filter((item) => {
+                return Math.trunc(item.price - (item.price * item.discount) / 100) >= 500000;
+            });
+            setStateProduct(arr);
         }
     };
 
