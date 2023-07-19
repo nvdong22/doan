@@ -45,38 +45,52 @@ function SearchPage() {
             setStateProduct(products?.data);
         }
     }, [products]);
-    const [fill, setFill] = useState(true);
 
-    const handleNavbar = () => {
-        setFill(false);
+    const handleNavbar = (e) => {
+        const value = e.target.value;
+        let arr;
+        if (value === '0-150.000đ') {
+            arr = products?.data.filter((item) => {
+                return Math.trunc(item.price - (item.price * item.discount) / 100) <= 150000;
+            });
+            setStateProduct(arr);
+        } else if (value === '150.000đ-300.000đ') {
+            arr = products?.data.filter((item) => {
+                return Math.trunc(item.price - (item.price * item.discount) / 100) > 150000 && Math.trunc(item.price - (item.price * item.discount) / 100) < 300000;
+            });
+            setStateProduct(arr);
+        } else if (value === '300.000đ-500.000đ') {
+            arr = products?.data.filter((item) => {
+                return Math.trunc(item.price - (item.price * item.discount) / 100) > 300000 && Math.trunc(item.price - (item.price * item.discount) / 100) < 500000;
+            });
+            setStateProduct(arr);
+        }
     };
 
     return (
         <Loading isLoading={isLoading || loading}>
             <h2 className={cx('wrapper')}>
-                <NavbarComponent className={cx('navbar')} data={products?.data} onChange={handleNavbar} />
+                <NavbarComponent className={cx('navbar')} onChange={handleNavbar} />
                 <div className={cx('inner')}>
-                    {fill && (
-                        <div className={cx('list-product')}>
-                            {stateProduct?.map((product) => {
-                                return (
-                                    <ProductCard
-                                        className={cx('search-product')}
-                                        key={product._id}
-                                        image={product.image}
-                                        name={product.name}
-                                        price={product.price}
-                                        rating={product.rating}
-                                        sold={product.sold}
-                                        discount={product.discount}
-                                        chapter={product.chapter}
-                                        countInStock={product.countInStock}
-                                        id={product._id}
-                                    />
-                                );
-                            })}
-                        </div>
-                    )}
+                    <div className={cx('list-product')}>
+                        {stateProduct?.map((product) => {
+                            return (
+                                <ProductCard
+                                    className={cx('search-product')}
+                                    key={product._id}
+                                    image={product.image}
+                                    name={product.name}
+                                    price={product.price}
+                                    rating={product.rating}
+                                    sold={product.sold}
+                                    discount={product.discount}
+                                    chapter={product.chapter}
+                                    countInStock={product.countInStock}
+                                    id={product._id}
+                                />
+                            );
+                        })}
+                    </div>
                 </div>
             </h2>
         </Loading>

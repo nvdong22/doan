@@ -7,10 +7,7 @@ import { Radio } from 'antd';
 
 const cx = classNames.bind(styles);
 function NavbarComponent(props) {
-    const {
-        //  data,
-        className,
-    } = props;
+    const { onChange, className } = props;
     const [showMore, setShowMore] = useState(false);
 
     const handleShowMore = () => {
@@ -70,9 +67,7 @@ function NavbarComponent(props) {
                 </div>
                 <div className={cx('title-price')}>Giá</div>
                 <div className={cx('price-product')}>
-                    <Radio.Group
-                    //  onChange={onChange}
-                    >
+                    <Radio.Group onChange={onChange}>
                         <div className={cx('list-price-product')}>
                             <span>
                                 <Radio className={cx('box-price')} value={'0-150.000đ'}>
