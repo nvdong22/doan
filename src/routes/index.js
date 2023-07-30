@@ -12,6 +12,7 @@ import CheckoutPage from '~/pages/CheckoutPage';
 import OrderSuccess from '~/pages/OrderSuccess';
 import MyOrder from '~/pages/MyOrder';
 import DetailOrder from '~/pages/DetailOrder';
+import ForgotPass from '~/pages/ForgotPass';
 
 const publishRoutes = [
     { path: '/', component: Home },
@@ -19,6 +20,8 @@ const publishRoutes = [
     { path: '/product/:id', component: Produce },
     { path: '/profile', component: Profile },
     { path: '/login', component: Login },
+    { path: '/forgotpass', component: ForgotPass },
+
     { path: '/register', component: Register },
     { path: '/search', component: SearchPage },
     { path: '/category/:type', component: Category },

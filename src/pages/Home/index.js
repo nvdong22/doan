@@ -4,15 +4,18 @@ import styles from './Home.module.scss';
 import Banner from './Banner';
 import ProductCard from '~/components/ProductCard';
 import * as ProductService from '~/service/ProductService';
+import * as CategoryService from '~/service/CategoryService';
+
 import { useQuery } from 'react-query';
 import Button from '~/components/Button';
 import { ImgBanner, typeImage } from '~/assets/images';
+import ProductSale from '~/components/ProductSale';
 
 const cx = classNames.bind(styles);
 
 function Home() {
     const limit = 10;
-    const page = 1;
+    const page = 0;
 
     const fetchProductAll = async (context) => {
         const search = '';
@@ -24,6 +27,12 @@ function Home() {
         return res;
     };
     const { data: products } = useQuery(['products', page, limit], fetchProductAll, { retry: 3, retryDelay: 1000 });
+    const getAllCategory = async () => {
+        const res = await CategoryService.getAllCategory();
+        return res;
+    };
+    const queryCategory = useQuery(['category'], getAllCategory);
+    const { data: category } = queryCategory;
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
@@ -75,7 +84,22 @@ function Home() {
                         <div className={cx('item-type-name')}>Manga</div>
                     </div>
                 </div>
+
+                <ProductSale />
+                <div className={cx('category')}>
+                    {category?.data?.map((item) => {
+                        return (
+                            <div key={item?._id} className={cx('item-category')}>
+                                <img src={item?.image} alt="" className={cx('img-category')} />
+                                <p className={cx('name-category')}>{item?.nameType}</p>
+                            </div>
+                        );
+                    })}
+                </div>
                 <div className={cx('product-top')}>
+                    <div className={cx('top-sp')}>
+                        <h3>XU HƯỚNG MUA SẮM</h3>
+                    </div>
                     <div className={cx('list-product')}>
                         {products?.data.map((product) => {
                             return (

@@ -110,7 +110,7 @@ function Cart() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isModalOpenUpdateInfo]);
-
+    //tiền tạm thời
     const priceMemo = useMemo(() => {
         const totalPrice = order?.orderItemSelected?.reduce((total, curr) => {
             return total + Math.trunc(curr.price - (curr.price * curr.discount) / 100) * curr.amount;
@@ -128,7 +128,7 @@ function Cart() {
             return 0;
         }
     }, [priceMemo]);
-
+    //giảm tiền khi đạt điều kiện
     const totalSale = useMemo(() => {
         return Number(priceMemo) - Number(diliveryPriceMemo);
     }, [priceMemo, diliveryPriceMemo]);

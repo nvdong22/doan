@@ -21,6 +21,7 @@ function MenuTippy({ children }) {
     useEffect(() => {
         fetchAllTypeProduct();
     }, []);
+
     const hanldeNavigateCategory = (type) => {
         navigate(
             `/category/${type
@@ -30,6 +31,7 @@ function MenuTippy({ children }) {
             { state: type },
         );
     };
+
     return (
         <div>
             <Tippy

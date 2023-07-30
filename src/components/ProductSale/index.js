@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 
-import styles from './Introduce.module.scss';
+import styles from './ProductSale.module.scss';
 import ProductCard from '~/components/ProductCard';
 import * as ProductService from '~/service/ProductService';
 import { useQuery } from 'react-query';
@@ -11,7 +11,7 @@ import { GrNext, GrPrevious } from 'react-icons/gr';
 
 const cx = classNames.bind(styles);
 
-function IntroduceProduct() {
+function ProductSale() {
     const limit = 10;
     const page = 1;
 
@@ -32,6 +32,7 @@ function IntroduceProduct() {
         slidesToScroll: 5,
         infinite: false,
         pauseOnHover: true,
+        pauseOnFocus: true,
         nextArrow: <SampleNextArrow />,
         prevArrow: <SamplePrevArrow />,
     };
@@ -57,7 +58,9 @@ function IntroduceProduct() {
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
                 <div className={cx('product-top')}>
-                    <h2 className={cx('title-product')}>FAHASA GIỚI THIỆU</h2>
+                    <div className={cx('title-product')}>
+                        <h3>FLASH SALE</h3>
+                    </div>
                     <div className={cx('list-product')}>
                         <Slider {...settings}>
                             {products?.data.map((product) => {
@@ -84,4 +87,4 @@ function IntroduceProduct() {
     );
 }
 
-export default IntroduceProduct;
+export default ProductSale;

@@ -61,17 +61,17 @@ function Register() {
                 </div>
                 <form method="post" action="">
                     <div className={cx('form-group')}>
-                        <label htmlFor="name" className={cx('form-label')}>
+                        <label htmlFor="email" className={cx('form-label')}>
                             Số điện thoại/Email
                         </label>
                         <div className={cx('form-input')}>
                             <InputForm
                                 value={email}
                                 onChange={handleOnchangeEmail}
-                                type="text"
+                                type="email"
                                 placeholder="Nhập số điện thoại hoặc email"
                                 className={cx('form-control')}
-                                id="name"
+                                id="email"
                             />
                         </div>
                     </div>

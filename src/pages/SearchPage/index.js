@@ -30,7 +30,6 @@ function SearchPage() {
     const searchProduct = useSelector((state) => state?.product?.search);
     const [stateProduct, setStateProduct] = useState([]);
     const searchDebounce = useDebounce(searchProduct, 500);
-
     useEffect(() => {
         if (!searchProduct) {
             return;

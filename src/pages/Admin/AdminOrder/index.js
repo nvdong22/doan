@@ -1,22 +1,33 @@
 import classNames from 'classnames/bind';
 import style from './AdminOrder.module.scss';
 import TableComponent from '../ComponentAdmin/TableComponent';
-import { useState } from 'react';
+import {
+    //  useEffect,
+    useState,
+} from 'react';
 import { Button as BTN, Input, Space } from 'antd';
 
 import * as OrderService from '~/service/OrderSevice';
 
+// import * as messages from '~/components/Message';
 import { useQuery } from 'react-query';
-import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
+import {
+    AiOutlineDelete,
+    //  AiOutlineEdit
+} from 'react-icons/ai';
 import { useSelector } from 'react-redux';
 import { useRef } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import { orderContant } from '~/contant';
+import ModalComponent from '../ComponentAdmin/ModalComponent';
+// import { useMutationHooks } from '~/hooks/useMutationHook';
+// import Loading from '~/components/LoadingComponent';
 
 const cx = classNames.bind(style);
 function AdminOrder() {
     // const [isOpenDrawer, setIsOpenDrawer] = useState(false);
+
     // const [rowSelected, setRowSelected] = useState('');
     const user = useSelector((state) => state?.user);
     //Get All Product
@@ -29,14 +40,43 @@ function AdminOrder() {
     const renderAction = () => {
         return (
             <div>
-                <AiOutlineDelete style={{ fontSize: '3rem' }} />
-                <AiOutlineEdit style={{ fontSize: '3rem' }} />
+                <AiOutlineDelete style={{ fontSize: '3rem' }} onClick={() => setIsModalOpenDelete(true)} />
             </div>
         );
     };
 
     //Update
+    const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
+    const handleCancelDelete = () => {
+        setIsModalOpenDelete(false);
+    };
+    // const mutationDelete = useMutationHooks((data) => {
+    //     const { id, token } = data;
+    //     const res = OrderService.deleteOrder(id, token);
+    //     return res;
+    // });
+    // const { data: dataDeleted, isLoading: isLoadingDeleted, isSuccess: isSuccessDeleted, isErrorDeleted } = mutationDelete;
 
+    // useEffect(() => {
+    //     if (isSuccessDeleted && dataDeleted?.status === 'OK') {
+    //         messages.success('thêm thành công');
+    //         handleCancelDelete();
+    //     } else if (isErrorDeleted && dataDeleted?.status === 'ERR') {
+    //         messages.error('thêm thất bại');
+    //     }
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [isSuccessDeleted, isErrorDeleted]);
+
+    // const handleDeleteUser = () => {
+    //     mutationDelete.mutate(
+    //         { id: rowSelected, token: user?.access_token },
+    //         {
+    //             onSettled: () => {
+    //                 queryOrder.refetch();
+    //             },
+    //         },
+    //     );
+    // };
     //Search
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
@@ -300,6 +340,16 @@ function AdminOrder() {
                     // }}
                 />
             </div>
+            {/* <Loading isLoading={isLoadingDeleted}> */}
+            <ModalComponent
+                title="Xóa sản phẩm"
+                open={isModalOpenDelete}
+                onCancel={handleCancelDelete}
+                //  onOk={handleDeleteUser}
+            >
+                <div>Bạn có chắc muốn xóa sản phẩm này không</div>
+            </ModalComponent>
+            {/* </Loading> */}
         </div>
     );
 }
